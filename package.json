@@ -1,0 +1,35 @@
+{
+  "name": "gerenciadordeescala",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryan-ggarcia/GerenciadorDeEscala.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryan-ggarcia/GerenciadorDeEscala/issues"
+  },
+  "homepage": "https://github.com/ryan-ggarcia/GerenciadorDeEscala#readme",
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^7.0.2"
+  },
+  "type": "module",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
