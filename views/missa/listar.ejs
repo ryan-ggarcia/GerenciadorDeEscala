@@ -1,0 +1,14 @@
+<h1>
+    Missa
+</h1>
+<div>
+    <ul>
+        <% if(missa_list && missa_list.length > 0) { %>
+            <% missa_list.forEach(missa => { %>
+                <li><%= missa.name %> - <%= missa.date %></li>
+            <% }) %>
+        <% } else { %>
+            <li>No Missas found</li>
+        <% } %>
+    </ul>
+</div>
