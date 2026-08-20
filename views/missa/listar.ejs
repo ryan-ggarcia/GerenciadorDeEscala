@@ -5,7 +5,7 @@
     <ul>
         <% if(missa_list && missa_list.length > 0) { %>
             <% missa_list.forEach(missa => { %>
-                <li><%= missa.name %> - <%= missa.date %></li>
+                <li><%= missa.mis_nome %> - <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %></li>
             <% }) %>
         <% } else { %>
             <li>No Missas found</li>

@@ -1,3 +1,4 @@
+<script src="/js/missa/cadastrar.js"></script>
 <div>
     <h1>Cadastrar Missa</h1>
     <div>
@@ -7,7 +8,7 @@
                 <label for="">Celebração</label>
             </div>
             <div>
-                <input type="text" name="name" placeholder="Nome da Missa">
+                <input type="text" name="name" placeholder="Nome da Missa" id="name">
             </div>
         </div>
         <div>
@@ -16,16 +17,25 @@
                 <label for="">Data</label>
             </div>
             <div>
-                <input type="date" name="date">
+                <input type="date" name="date" id="date">
             </div>
         </div>
         <div>
             <div>
                 <i></i>
-                <label for="">Horário</label>
+                <label for="">Horário Inicial</label>
             </div>
             <div>
-                <input type="time" name="time">
+                <input type="time" name="timeStart" id="timeStart">
+            </div>
+        </div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Horário Final</label>
+            </div>
+            <div>
+                <input type="time" name="timeEnd" id="timeEnd">
             </div>
         </div>
         <div>
@@ -34,17 +44,11 @@
                 <label for="">Local</label>
             </div>
             <div>
-                <input type="text" name="location" placeholder="Local da Missa">
+                <input type="text" name="location" placeholder="Local da Missa" id="location">
             </div>
         </div>
         <div>
-            <div>
-                <i></i>
-                <label for="">Observações</label>
-            </div>
-            <div>
-                <textarea name="observations" placeholder="Observações"></textarea>
-            </div>
+            <button type="button" id="btn-Cadastro">Cadastrar</button>
         </div>
     </div>
 </div>
