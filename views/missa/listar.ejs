@@ -2,13 +2,22 @@
     Missa
 </h1>
 <div>
-    <ul>
+    <div>
         <% if(missa_list && missa_list.length > 0) { %>
             <% missa_list.forEach(missa => { %>
-                <li><%= missa.mis_nome %> - <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %></li>
+                <div>
+                     <a href="/missa/alterar/<%= missa.mis_id %>">
+                    <%= missa.mis_nome %> - <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %>
+                </a>
+                </div>
+               <div>
+                <i class="bi bi-trash"></i>
+                <button></button>
+               </div>
+
             <% }) %>
         <% } else { %>
-            <li>No Missas found</li>
+            <p>No Missas found</p>
         <% } %>
-    </ul>
+    </div>
 </div>

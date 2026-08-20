@@ -1,0 +1,58 @@
+<h1> Alterar Missa </h1>
+<script src="/js/missa/alterar.js"></script>
+
+<div>
+    <div>
+        <div>
+            <input type="text" hidden name="id" placeholder="Id da Missa" id="id" value="<%= findMissa.mis_id %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Celebração</label>
+        </div>
+        <div>
+            <input type="text" name="name" placeholder="Nome da Missa" id="name" value="<%= findMissa.mis_nome %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Data</label>
+        </div>
+        <div>
+            <input type="date" name="date" id="date" value="<%= new Date(findMissa.mis_dia).toISOString().split('T')[0] %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Horário Inicial</label>
+        </div>
+        <div>
+            <input type="time" name="timeStart" id="timeStart" value="<%= findMissa.mis_hora_inicio %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Horário Final</label>
+        </div>
+        <div>
+            <input type="time" name="timeEnd" id="timeEnd" value="<%= findMissa.mis_hora_final %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Local</label>
+        </div>
+        <div>
+            <input type="text" name="location" placeholder="Local da Missa" id="location" value="<%= findMissa.mis_local %>">
+        </div>
+    </div>
+    <div>
+        <button type="button" id="btn-Alterar">Alterar</button>
+    </div>
+</div>

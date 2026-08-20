@@ -5,7 +5,8 @@ const router = express.Router()
 
 router.get('/', MissaController.view);
 router.get('/cadastrar', MissaController.viewCreate);
-router.get('/alterar', MissaController.viewEdit);
 router.post('/cadastrar', MissaController.create);
+router.post('/alterar', MissaController.update)
+router.get('/alterar/:id', MissaController.viewEdit);
 
 export default router
