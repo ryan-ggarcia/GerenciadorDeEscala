@@ -7,6 +7,7 @@ router.get('/', MissaController.view);
 router.get('/cadastrar', MissaController.viewCreate);
 router.post('/cadastrar', MissaController.create);
 router.post('/alterar', MissaController.update)
+router.post('/deletar', MissaController.deletar)
 router.get('/alterar/:id', MissaController.viewEdit);
 
 export default router

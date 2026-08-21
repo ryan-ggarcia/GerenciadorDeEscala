@@ -57,4 +57,23 @@ export default class MissaController {
     }
   }
 
+  static async deletar(req,res){
+    try{
+      const {id} = req.body
+      if ( !id )
+        return res.status(404).json({ok: false})
+
+      let deleteMissa = await MissaRepository.delete(id)
+
+      if( deleteMissa == null )
+        return res.status(500).json({ok:false})
+
+      return res.status(200).json({ok:true})
+    }
+    catch(err){
+      console.log(err)
+      return res.status(500).json({ ok: false })
+    }
+  }
+
 }
