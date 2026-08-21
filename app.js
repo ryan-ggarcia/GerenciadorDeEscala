@@ -2,6 +2,7 @@ import expressEjsLayouts from 'express-ejs-layouts'
 import express from 'express'
 import UserRouter from './router/UserRouter.js'
 import MissaRouter from './router/MissaRouter.js'
+import AcolitosRouter from './router/AcolitosRouter.js'
 import HomeRouter from './router/HomeRouter.js'
 
 const app = express()
@@ -19,5 +20,6 @@ app.use(express.json())
 app.use('/', HomeRouter)
 app.use('/user', UserRouter)
 app.use('/missa', MissaRouter)
+app.use('/acolitos', AcolitosRouter)
 
 app.listen(port, ()=>{ console.log(`app on-line`) })
