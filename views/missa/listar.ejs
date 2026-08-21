@@ -1,0 +1,24 @@
+<script src="/js/missa/excluir.js" ></script>
+<h1>
+    Missa
+</h1>
+<div>
+    <div>
+        <% if(missa_list && missa_list.length > 0) { %>
+            <% missa_list.forEach(missa => { %>
+                <div>
+                     <a href="/missa/alterar/<%= missa.mis_id %>">
+                    <%= missa.mis_nome %> - <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %>
+                </a>
+                </div>
+               <div>
+                <i class="bi bi-trash"></i>
+                <button data-id="<%= missa.mis_id %>" class="btn">Excluir</button>
+               </div>
+
+            <% }) %>
+        <% } else { %>
+            <p>No Missas found</p>
+        <% } %>
+    </div>
+</div>
