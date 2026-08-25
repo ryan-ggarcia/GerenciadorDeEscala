@@ -1,0 +1,24 @@
+<script src="/js/acolitofuncao/excluir.js" ></script>
+<h1>
+    Acólito x Função
+</h1>
+<div>
+    <div>
+        <% if(acolitofuncao_list && acolitofuncao_list.length > 0) { %>
+            <% acolitofuncao_list.forEach(acolitofuncao => { %>
+                <div>
+                     <a href="/acolitofuncao/alterar/<%= acolitofuncao.aco_id %>/<%= acolitofuncao.fun_id %>">
+                    <%= acolitofuncao.acolito.aco_nome %> - <%= acolitofuncao.funcao.fun_nome %> (pode servir: <%= acolitofuncao.pode_servir ? 'Sim' : 'Não' %>)
+                </a>
+                </div>
+               <div>
+                <i class="bi bi-trash"></i>
+                <button data-aco-id="<%= acolitofuncao.aco_id %>" data-fun-id="<%= acolitofuncao.fun_id %>" class="btn">Excluir</button>
+               </div>
+
+            <% }) %>
+        <% } else { %>
+            <p>No AcolitoFuncao found</p>
+        <% } %>
+    </div>
+</div>

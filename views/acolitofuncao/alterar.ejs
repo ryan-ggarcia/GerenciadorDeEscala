@@ -1,0 +1,49 @@
+<h1> Alterar Acólito x Função </h1>
+<script src="/js/acolitofuncao/alterar.js"></script>
+
+<div>
+    <div>
+        <div>
+            <input type="text" hidden name="old_aco_id" id="old_aco_id" value="<%= findAcolitoFuncao.aco_id %>">
+            <input type="text" hidden name="old_fun_id" id="old_fun_id" value="<%= findAcolitoFuncao.fun_id %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Acólito</label>
+        </div>
+        <div>
+            <select name="aco_id" id="aco_id">
+                <% acolitos_list.forEach(acolito => { %>
+                    <option value="<%= acolito.aco_id %>" <%= acolito.aco_id === findAcolitoFuncao.aco_id ? 'selected' : '' %>><%= acolito.aco_nome %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Função</label>
+        </div>
+        <div>
+            <select name="fun_id" id="fun_id">
+                <% funcao_list.forEach(funcao => { %>
+                    <option value="<%= funcao.fun_id %>" <%= funcao.fun_id === findAcolitoFuncao.fun_id ? 'selected' : '' %>><%= funcao.fun_nome %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="podeServir">Pode Servir</label>
+        </div>
+        <div>
+            <input type="checkbox" name="podeServir" id="podeServir" <%= findAcolitoFuncao.pode_servir ? 'checked' : '' %>>
+        </div>
+    </div>
+    <div>
+        <button type="button" id="btn-Alterar">Alterar</button>
+    </div>
+</div>

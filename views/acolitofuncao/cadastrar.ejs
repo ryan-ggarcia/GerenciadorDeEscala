@@ -1,0 +1,46 @@
+<script src="/js/acolitofuncao/cadastrar.js"></script>
+<div>
+    <h1>Cadastrar Acólito x Função</h1>
+    <div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Acólito</label>
+            </div>
+            <div>
+                <select name="aco_id" id="aco_id">
+                    <option value="">Selecione</option>
+                    <% acolitos_list.forEach(acolito => { %>
+                        <option value="<%= acolito.aco_id %>"><%= acolito.aco_nome %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Função</label>
+            </div>
+            <div>
+                <select name="fun_id" id="fun_id">
+                    <option value="">Selecione</option>
+                    <% funcao_list.forEach(funcao => { %>
+                        <option value="<%= funcao.fun_id %>"><%= funcao.fun_nome %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div>
+                <i></i>
+                <label for="podeServir">Pode Servir</label>
+            </div>
+            <div>
+                <input type="checkbox" name="podeServir" id="podeServir" checked>
+            </div>
+        </div>
+        <div>
+            <button type="button" id="btn-Cadastro">Cadastrar</button>
+        </div>
+    </div>
+</div>
