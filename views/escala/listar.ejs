@@ -1,0 +1,24 @@
+<script src="/js/escala/excluir.js" ></script>
+<h1>
+    Escala
+</h1>
+<div>
+    <div>
+        <% if(escala_list && escala_list.length > 0) { %>
+            <% escala_list.forEach(escala => { %>
+                <div>
+                     <a href="/escala/alterar/<%= escala.esc_id %>">
+                    <%= escala.acolito.aco_nome %> - <%= escala.funcao.fun_nome %> - <%= escala.missa.mis_nome %> (<%= new Date(escala.missa.mis_dia).toLocaleDateString('pt-BR') %>) - <%= escala.esc_status %>
+                </a>
+                </div>
+               <div>
+                <i class="bi bi-trash"></i>
+                <button data-id="<%= escala.esc_id %>" class="btn">Excluir</button>
+               </div>
+
+            <% }) %>
+        <% } else { %>
+            <p>No Escala found</p>
+        <% } %>
+    </div>
+</div>
