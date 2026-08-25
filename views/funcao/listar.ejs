@@ -1,0 +1,24 @@
+<script src="/js/funcao/excluir.js" ></script>
+<h1>
+    Função
+</h1>
+<div>
+    <div>
+        <% if(funcao_list && funcao_list.length > 0) { %>
+            <% funcao_list.forEach(funcao => { %>
+                <div>
+                     <a href="/funcao/alterar/<%= funcao.fun_id %>">
+                    <%= funcao.fun_nome %><% if (funcao.fun_descricao) { %> - <%= funcao.fun_descricao %><% } %>
+                </a>
+                </div>
+               <div>
+                <i class="bi bi-trash"></i>
+                <button data-id="<%= funcao.fun_id %>" class="btn">Excluir</button>
+               </div>
+
+            <% }) %>
+        <% } else { %>
+            <p>No Funcao found</p>
+        <% } %>
+    </div>
+</div>

@@ -4,6 +4,8 @@ import UserRouter from './router/UserRouter.js'
 import MissaRouter from './router/MissaRouter.js'
 import AcolitosRouter from './router/AcolitosRouter.js'
 import IndisponivelRouter from './router/IndisponivelRouter.js'
+import FuncaoRouter from './router/FuncaoRouter.js'
+import EscalaRouter from './router/EscalaRouter.js'
 import HomeRouter from './router/HomeRouter.js'
 
 const app = express()
@@ -23,5 +25,7 @@ app.use('/user', UserRouter)
 app.use('/missa', MissaRouter)
 app.use('/acolitos', AcolitosRouter)
 app.use('/indisponivel', IndisponivelRouter)
+app.use('/funcao', FuncaoRouter)
+app.use('/escala', EscalaRouter)
 
 app.listen(port, ()=>{ console.log(`app on-line`) })

@@ -1,0 +1,51 @@
+<script src="/js/escala/cadastrar.js"></script>
+<div>
+    <h1>Cadastrar Escala</h1>
+    <div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Missa</label>
+            </div>
+            <div>
+                <select name="mis_id" id="mis_id">
+                    <option value="">Selecione</option>
+                    <% missa_list.forEach(missa => { %>
+                        <option value="<%= missa.mis_id %>"><%= missa.mis_nome %> - <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Acólito</label>
+            </div>
+            <div>
+                <select name="aco_id" id="aco_id">
+                    <option value="">Selecione</option>
+                    <% acolitos_list.forEach(acolito => { %>
+                        <option value="<%= acolito.aco_id %>"><%= acolito.aco_nome %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Função</label>
+            </div>
+            <div>
+                <select name="fun_id" id="fun_id">
+                    <option value="">Selecione</option>
+                    <% funcao_list.forEach(funcao => { %>
+                        <option value="<%= funcao.fun_id %>"><%= funcao.fun_nome %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div>
+            <button type="button" id="btn-Cadastro">Cadastrar</button>
+        </div>
+    </div>
+</div>
