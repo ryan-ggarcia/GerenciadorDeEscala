@@ -1,0 +1,24 @@
+<script src="/js/acolitos/excluir.js" ></script>
+<h1>
+    Acólitos
+</h1>
+<div>
+    <div>
+        <% if(acolitos_list && acolitos_list.length > 0) { %>
+            <% acolitos_list.forEach(acolito => { %>
+                <div>
+                     <a href="/acolitos/alterar/<%= acolito.aco_id %>">
+                    <%= acolito.aco_nome %> (<%= acolito.aco_status %>)
+                </a>
+                </div>
+               <div>
+                <i class="bi bi-trash"></i>
+                <button data-id="<%= acolito.aco_id %>" class="btn">Excluir</button>
+               </div>
+
+            <% }) %>
+        <% } else { %>
+            <p>No Acolitos found</p>
+        <% } %>
+    </div>
+</div>

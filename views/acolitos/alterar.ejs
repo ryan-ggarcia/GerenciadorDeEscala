@@ -1,0 +1,34 @@
+<h1> Alterar Acólito </h1>
+<script src="/js/acolitos/alterar.js"></script>
+
+<div>
+    <div>
+        <div>
+            <input type="text" hidden name="id" placeholder="Id do Acólito" id="id" value="<%= findAcolito.aco_id %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Nome</label>
+        </div>
+        <div>
+            <input type="text" name="nome" placeholder="Nome do Acólito" id="nome" value="<%= findAcolito.aco_nome %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Status</label>
+        </div>
+        <div>
+            <select name="status" id="status">
+                <option value="ATIVO" <%= findAcolito.aco_status === 'ATIVO' ? 'selected' : '' %>>ATIVO</option>
+                <option value="INATIVO" <%= findAcolito.aco_status === 'INATIVO' ? 'selected' : '' %>>INATIVO</option>
+            </select>
+        </div>
+    </div>
+    <div>
+        <button type="button" id="btn-Alterar">Alterar</button>
+    </div>
+</div>
