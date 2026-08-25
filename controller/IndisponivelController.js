@@ -1,0 +1,83 @@
+import IndisponivelRepository from "../repositories/IndisponivelRepository.js";
+import AcolitosRepository from "../repositories/AcolitosRepository.js";
+
+export default class IndisponivelController {
+  static async view(req, res) {
+    let indisponivel_list = await IndisponivelRepository.getAll()
+
+    res.render('indisponivel/listar.ejs', { indisponivel_list })
+  }
+
+  static async viewCreate(req, res) {
+    let acolitos_list = await AcolitosRepository.getAll()
+
+    res.render('indisponivel/cadastrar.ejs', { acolitos_list })
+  }
+
+  static async viewEdit(req, res) {
+    let findIndisponivel = await IndisponivelRepository.findById(req.params.id)
+    let acolitos_list = await AcolitosRepository.getAll()
+
+    res.render('indisponivel/alterar.ejs',{ findIndisponivel, acolitos_list })
+  }
+
+  static async create(req, res) {
+    try {
+      const { aco_id, dataInicio, dataFim, motivo } = req.body
+
+      if (!aco_id || !dataInicio || !dataFim)
+        return res.status(404).json({ ok: false })
+
+      let newIndisponivel = await IndisponivelRepository.create({ aco_id: aco_id, dataInicio: dataInicio, dataFim: dataFim, motivo: motivo })
+
+      if (newIndisponivel == null)
+        return res.status(400).json({ ok: false })
+
+      return res.status(201).json({ ok: true })
+    }
+    catch (err) {
+      console.log(err)
+      return res.status(500).json({ ok: false })
+    }
+  }
+
+  static async update(req,res){
+    try{
+      const { id, aco_id, dataInicio, dataFim, motivo } = req.body
+
+      if(!id || !aco_id || !dataInicio || !dataFim)
+        return res.status(404).json({ ok: false })
+
+      let updatedIndisponivel = await IndisponivelRepository.update({ id: id, aco_id: aco_id, dataInicio: dataInicio, dataFim: dataFim, motivo: motivo })
+
+      if (updatedIndisponivel == null)
+        return res.status(400).json({ ok: false })
+
+      return res.status(201).json({ ok: true })
+    }
+    catch(err){
+      console.log(err)
+      return res.status(500).json({ ok: false })
+    }
+  }
+
+  static async deletar(req,res){
+    try{
+      const {id} = req.body
+      if ( !id )
+        return res.status(404).json({ok: false})
+
+      let deleteIndisponivel = await IndisponivelRepository.delete(id)
+
+      if( deleteIndisponivel == null )
+        return res.status(500).json({ok:false})
+
+      return res.status(200).json({ok:true})
+    }
+    catch(err){
+      console.log(err)
+      return res.status(500).json({ ok: false })
+    }
+  }
+
+}

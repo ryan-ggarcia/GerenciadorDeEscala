@@ -1,0 +1,53 @@
+<h1> Alterar Indisponibilidade </h1>
+<script src="/js/indisponivel/alterar.js"></script>
+
+<div>
+    <div>
+        <div>
+            <input type="text" hidden name="id" placeholder="Id da Indisponibilidade" id="id" value="<%= findIndisponivel.ind_id %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Acólito</label>
+        </div>
+        <div>
+            <select name="aco_id" id="aco_id">
+                <% acolitos_list.forEach(acolito => { %>
+                    <option value="<%= acolito.aco_id %>" <%= acolito.aco_id === findIndisponivel.aco_id ? 'selected' : '' %>><%= acolito.aco_nome %></option>
+                <% }) %>
+            </select>
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Data Inicial</label>
+        </div>
+        <div>
+            <input type="date" name="dataInicio" id="dataInicio" value="<%= new Date(findIndisponivel.ind_data_inicio).toISOString().split('T')[0] %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Data Final</label>
+        </div>
+        <div>
+            <input type="date" name="dataFim" id="dataFim" value="<%= new Date(findIndisponivel.ind_data_fim).toISOString().split('T')[0] %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Motivo</label>
+        </div>
+        <div>
+            <input type="text" name="motivo" placeholder="Motivo da Indisponibilidade" id="motivo" value="<%= findIndisponivel.ind_motivo ?? '' %>">
+        </div>
+    </div>
+    <div>
+        <button type="button" id="btn-Alterar">Alterar</button>
+    </div>
+</div>
