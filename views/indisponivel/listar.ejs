@@ -1,0 +1,24 @@
+<script src="/js/indisponivel/excluir.js" ></script>
+<h1>
+    Indisponibilidades
+</h1>
+<div>
+    <div>
+        <% if(indisponivel_list && indisponivel_list.length > 0) { %>
+            <% indisponivel_list.forEach(indisponivel => { %>
+                <div>
+                     <a href="/indisponivel/alterar/<%= indisponivel.ind_id %>">
+                    <%= indisponivel.acolito.aco_nome %> - <%= new Date(indisponivel.ind_data_inicio).toLocaleDateString('pt-BR') %> até <%= new Date(indisponivel.ind_data_fim).toLocaleDateString('pt-BR') %><% if (indisponivel.ind_motivo) { %> (<%= indisponivel.ind_motivo %>)<% } %>
+                </a>
+                </div>
+               <div>
+                <i class="bi bi-trash"></i>
+                <button data-id="<%= indisponivel.ind_id %>" class="btn">Excluir</button>
+               </div>
+
+            <% }) %>
+        <% } else { %>
+            <p>No Indisponivel found</p>
+        <% } %>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<script src="/js/indisponivel/cadastrar.js"></script>
+<div>
+    <h1>Cadastrar Indisponibilidade</h1>
+    <div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Acólito</label>
+            </div>
+            <div>
+                <select name="aco_id" id="aco_id">
+                    <option value="">Selecione</option>
+                    <% acolitos_list.forEach(acolito => { %>
+                        <option value="<%= acolito.aco_id %>"><%= acolito.aco_nome %></option>
+                    <% }) %>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Data Inicial</label>
+            </div>
+            <div>
+                <input type="date" name="dataInicio" id="dataInicio">
+            </div>
+        </div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Data Final</label>
+            </div>
+            <div>
+                <input type="date" name="dataFim" id="dataFim">
+            </div>
+        </div>
+        <div>
+            <div>
+                <i></i>
+                <label for="">Motivo</label>
+            </div>
+            <div>
+                <input type="text" name="motivo" placeholder="Motivo da Indisponibilidade" id="motivo">
+            </div>
+        </div>
+        <div>
+            <button type="button" id="btn-Cadastro">Cadastrar</button>
+        </div>
+    </div>
+</div>
