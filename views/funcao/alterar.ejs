@@ -1,0 +1,31 @@
+<h1> Alterar Função </h1>
+<script src="/js/funcao/alterar.js"></script>
+
+<div>
+    <div>
+        <div>
+            <input type="text" hidden name="id" placeholder="Id da Função" id="id" value="<%= findFuncao.fun_id %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Nome</label>
+        </div>
+        <div>
+            <input type="text" name="nome" placeholder="Nome da Função" id="nome" value="<%= findFuncao.fun_nome %>">
+        </div>
+    </div>
+    <div>
+        <div>
+            <i></i>
+            <label for="">Descrição</label>
+        </div>
+        <div>
+            <input type="text" name="descricao" placeholder="Descrição da Função" id="descricao" value="<%= findFuncao.fun_descricao ?? '' %>">
+        </div>
+    </div>
+    <div>
+        <button type="button" id="btn-Alterar">Alterar</button>
+    </div>
+</div>
