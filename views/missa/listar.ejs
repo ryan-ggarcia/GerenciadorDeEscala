@@ -1,24 +1,64 @@
-<script src="/js/missa/excluir.js" ></script>
-<h1>
-    Missa
-</h1>
-<div>
-    <div>
-        <% if(missa_list && missa_list.length > 0) { %>
-            <% missa_list.forEach(missa => { %>
-                <div>
-                     <a href="/missa/alterar/<%= missa.mis_id %>">
-                    <%= missa.mis_nome %> - <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %>
-                </a>
-                </div>
-               <div>
-                <i class="bi bi-trash"></i>
-                <button data-id="<%= missa.mis_id %>" class="btn">Excluir</button>
-               </div>
+<script src="/js/missa/excluir.js"></script>
 
-            <% }) %>
+<section class="page">
+    <div class="page__head">
+        <div>
+            <p class="eyebrow">Cadastro</p>
+            <h1 class="page__title">Missas</h1>
+            <p class="page__sub">As celebrações da paróquia, com dia, horário e local.</p>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-outline-accent" href="/missa/cadastrar"><i class="bi bi-plus-lg"></i> Nova missa</a>
+        </div>
+    </div>
+
+    <div class="card panel">
+        <div class="panel__tools">
+            <label class="search">
+                <i class="bi bi-search"></i>
+                <input type="text" class="form-control" data-table-filter placeholder="Buscar celebração ou local&hellip;" aria-label="Buscar missa">
+            </label>
+            <span class="panel__count"></span>
+        </div>
+
+        <% if (missa_list && missa_list.length > 0) { %>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Celebração</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Local</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% missa_list.forEach(missa => { %>
+                            <tr>
+                                <td class="cell-primary">
+                                    <a href="/missa/alterar/<%= missa.mis_id %>"><%= missa.mis_nome %></a>
+                                </td>
+                                <td class="cell-muted"><%= missa.mis_dia ? new Date(missa.mis_dia).toLocaleDateString('pt-BR') : '—' %></td>
+                                <td class="cell-muted">
+                                    <%= missa.mis_hora_inicio ? String(missa.mis_hora_inicio).slice(0, 5) : '' %><%
+                                    %><%= missa.mis_hora_final ? ' – ' + String(missa.mis_hora_final).slice(0, 5) : '' %>
+                                </td>
+                                <td class="cell-muted"><%= missa.mis_local || '—' %></td>
+                                <td class="cell-actions">
+                                    <a class="icon-btn" href="/missa/alterar/<%= missa.mis_id %>" aria-label="Editar missa"><i class="bi bi-pencil"></i></a>
+                                    <button type="button" class="icon-btn icon-btn--danger btn-excluir" data-id="<%= missa.mis_id %>" aria-label="Excluir missa"><i class="bi bi-trash3"></i></button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         <% } else { %>
-            <p>No Missas found</p>
+            <div class="empty">
+                <i class="bi bi-calendar2-week empty__icon"></i>
+                Nenhuma missa cadastrada. <a href="/missa/cadastrar">Cadastrar a primeira</a>.
+            </div>
         <% } %>
     </div>
-</div>
+</section>

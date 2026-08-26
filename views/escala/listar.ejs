@@ -1,24 +1,44 @@
-<script src="/js/escala/excluir.js" ></script>
-<h1>
-    Escala
-</h1>
-<div>
-    <div>
-        <% if(escala_list && escala_list.length > 0) { %>
-            <% escala_list.forEach(escala => { %>
-                <div>
-                     <a href="/escala/alterar/<%= escala.esc_id %>">
-                    <%= escala.acolito.aco_nome %> - <%= escala.funcao.fun_nome %> - <%= escala.missa.mis_nome %> (<%= new Date(escala.missa.mis_dia).toLocaleDateString('pt-BR') %>) - <%= escala.esc_status %>
-                </a>
-                </div>
-               <div>
-                <i class="bi bi-trash"></i>
-                <button data-id="<%= escala.esc_id %>" class="btn">Excluir</button>
-               </div>
-
-            <% }) %>
-        <% } else { %>
-            <p>No Escala found</p>
-        <% } %>
+<section class="page">
+    <div class="page__head">
+        <div>
+            <p class="eyebrow">Escala</p>
+            <h1 class="page__title">Escalas</h1>
+            <p class="page__sub">Quem serve ao altar em cada celebração.</p>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-outline-accent" href="/escala/cadastrar"><i class="bi bi-plus-lg"></i> Escalar acólito</a>
+        </div>
     </div>
-</div>
+
+    <div class="card calendar" id="calendar">
+        <div class="calendar__bar">
+            <h2 class="calendar__month" data-cal-label>&nbsp;</h2>
+            <div class="calendar__nav">
+                <button type="button" class="calendar__today" data-cal-today>Hoje</button>
+                <button type="button" class="icon-btn" data-cal-prev aria-label="Mês anterior"><i class="bi bi-chevron-left"></i></button>
+                <button type="button" class="icon-btn" data-cal-next aria-label="Próximo mês"><i class="bi bi-chevron-right"></i></button>
+            </div>
+        </div>
+        <div class="calendar__grid" data-cal-grid></div>
+    </div>
+
+    <div class="card day-panel" data-cal-panel hidden></div>
+
+    <% if (!escala_list || escala_list.length === 0) { %>
+        <div class="empty">
+            <i class="bi bi-list-check empty__icon"></i>
+            Nenhuma escala montada ainda. <a href="/escala/cadastrar">Escalar o primeiro acólito</a>.
+        </div>
+    <% } %>
+
+    <script id="escala-data" type="application/json"><%- JSON.stringify((escala_list || []).map(function (e) { return {
+        id: e.esc_id,
+        dia: e.missa.mis_dia,
+        missa: e.missa.mis_nome,
+        hora: e.missa.mis_hora_inicio,
+        acolito: e.acolito.aco_nome,
+        funcao: e.funcao.fun_nome,
+        status: e.esc_status
+    }; })).replace(/</g, '\\u003c') %></script>
+    <script src="/js/escala/calendario.js"></script>
+</section>

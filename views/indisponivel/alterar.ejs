@@ -1,53 +1,47 @@
-<h1> Alterar Indisponibilidade </h1>
 <script src="/js/indisponivel/alterar.js"></script>
 
-<div>
-    <div>
+<section class="page">
+    <div class="page__head">
         <div>
-            <input type="text" hidden name="id" placeholder="Id da Indisponibilidade" id="id" value="<%= findIndisponivel.ind_id %>">
+            <p class="eyebrow">Indisponibilidades</p>
+            <h1 class="page__title">Editar indisponibilidade</h1>
+            <p class="page__sub">Ajuste o acólito, o período ou o motivo.</p>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-ghost" href="/indisponivel"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
     </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Acólito</label>
+
+    <form class="card form-card" onsubmit="return false">
+        <span class="form-card__accent" aria-hidden="true"></span>
+        <input type="text" hidden name="id" id="id" value="<%= findIndisponivel.ind_id %>">
+        <div class="form-card__body">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="aco_id">Acólito</label>
+                    <select class="form-select" name="aco_id" id="aco_id">
+                        <% acolitos_list.forEach(acolito => { %>
+                            <option value="<%= acolito.aco_id %>" <%= acolito.aco_id === findIndisponivel.aco_id ? 'selected' : '' %>><%= acolito.aco_nome %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="dataInicio">Data inicial</label>
+                    <input type="date" class="form-control" name="dataInicio" id="dataInicio" value="<%= new Date(findIndisponivel.ind_data_inicio).toISOString().split('T')[0] %>">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="dataFim">Data final</label>
+                    <input type="date" class="form-control" name="dataFim" id="dataFim" value="<%= new Date(findIndisponivel.ind_data_fim).toISOString().split('T')[0] %>">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="motivo">Motivo <span class="text-body-tertiary">(opcional)</span></label>
+                    <input type="text" class="form-control" name="motivo" id="motivo" value="<%= findIndisponivel.ind_motivo ?? '' %>" placeholder="Ex.: Viagem, prova, saúde">
+                </div>
+            </div>
         </div>
-        <div>
-            <select name="aco_id" id="aco_id">
-                <% acolitos_list.forEach(acolito => { %>
-                    <option value="<%= acolito.aco_id %>" <%= acolito.aco_id === findIndisponivel.aco_id ? 'selected' : '' %>><%= acolito.aco_nome %></option>
-                <% }) %>
-            </select>
+        <div class="form-card__foot">
+            <a class="btn btn-ghost" href="/indisponivel">Cancelar</a>
+            <button type="button" id="btn-Alterar" class="btn btn-primary">Salvar alterações</button>
         </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Data Inicial</label>
-        </div>
-        <div>
-            <input type="date" name="dataInicio" id="dataInicio" value="<%= new Date(findIndisponivel.ind_data_inicio).toISOString().split('T')[0] %>">
-        </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Data Final</label>
-        </div>
-        <div>
-            <input type="date" name="dataFim" id="dataFim" value="<%= new Date(findIndisponivel.ind_data_fim).toISOString().split('T')[0] %>">
-        </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Motivo</label>
-        </div>
-        <div>
-            <input type="text" name="motivo" placeholder="Motivo da Indisponibilidade" id="motivo" value="<%= findIndisponivel.ind_motivo ?? '' %>">
-        </div>
-    </div>
-    <div>
-        <button type="button" id="btn-Alterar">Alterar</button>
-    </div>
-</div>
+    </form>
+</section>

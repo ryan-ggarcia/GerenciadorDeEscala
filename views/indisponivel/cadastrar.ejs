@@ -1,50 +1,47 @@
 <script src="/js/indisponivel/cadastrar.js"></script>
-<div>
-    <h1>Cadastrar Indisponibilidade</h1>
-    <div>
+
+<section class="page">
+    <div class="page__head">
         <div>
-            <div>
-                <i></i>
-                <label for="">Acólito</label>
-            </div>
-            <div>
-                <select name="aco_id" id="aco_id">
-                    <option value="">Selecione</option>
-                    <% acolitos_list.forEach(acolito => { %>
-                        <option value="<%= acolito.aco_id %>"><%= acolito.aco_nome %></option>
-                    <% }) %>
-                </select>
-            </div>
+            <p class="eyebrow">Indisponibilidades</p>
+            <h1 class="page__title">Nova indisponibilidade</h1>
+            <p class="page__sub">Informe quando um acólito não estará disponível para servir.</p>
         </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="">Data Inicial</label>
-            </div>
-            <div>
-                <input type="date" name="dataInicio" id="dataInicio">
-            </div>
-        </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="">Data Final</label>
-            </div>
-            <div>
-                <input type="date" name="dataFim" id="dataFim">
-            </div>
-        </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="">Motivo</label>
-            </div>
-            <div>
-                <input type="text" name="motivo" placeholder="Motivo da Indisponibilidade" id="motivo">
-            </div>
-        </div>
-        <div>
-            <button type="button" id="btn-Cadastro">Cadastrar</button>
+        <div class="page__actions">
+            <a class="btn btn-ghost" href="/indisponivel"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
     </div>
-</div>
+
+    <form class="card form-card" onsubmit="return false">
+        <span class="form-card__accent" aria-hidden="true"></span>
+        <div class="form-card__body">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="aco_id">Acólito</label>
+                    <select class="form-select" name="aco_id" id="aco_id">
+                        <option value="">Selecione</option>
+                        <% acolitos_list.forEach(acolito => { %>
+                            <option value="<%= acolito.aco_id %>"><%= acolito.aco_nome %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="dataInicio">Data inicial</label>
+                    <input type="date" class="form-control" name="dataInicio" id="dataInicio">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="dataFim">Data final</label>
+                    <input type="date" class="form-control" name="dataFim" id="dataFim">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="motivo">Motivo <span class="text-body-tertiary">(opcional)</span></label>
+                    <input type="text" class="form-control" name="motivo" id="motivo" placeholder="Ex.: Viagem, prova, saúde">
+                </div>
+            </div>
+        </div>
+        <div class="form-card__foot">
+            <a class="btn btn-ghost" href="/indisponivel">Cancelar</a>
+            <button type="button" id="btn-Cadastro" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+</section>

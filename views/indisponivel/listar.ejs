@@ -1,24 +1,63 @@
-<script src="/js/indisponivel/excluir.js" ></script>
-<h1>
-    Indisponibilidades
-</h1>
-<div>
-    <div>
-        <% if(indisponivel_list && indisponivel_list.length > 0) { %>
-            <% indisponivel_list.forEach(indisponivel => { %>
-                <div>
-                     <a href="/indisponivel/alterar/<%= indisponivel.ind_id %>">
-                    <%= indisponivel.acolito.aco_nome %> - <%= new Date(indisponivel.ind_data_inicio).toLocaleDateString('pt-BR') %> até <%= new Date(indisponivel.ind_data_fim).toLocaleDateString('pt-BR') %><% if (indisponivel.ind_motivo) { %> (<%= indisponivel.ind_motivo %>)<% } %>
-                </a>
-                </div>
-               <div>
-                <i class="bi bi-trash"></i>
-                <button data-id="<%= indisponivel.ind_id %>" class="btn">Excluir</button>
-               </div>
+<script src="/js/indisponivel/excluir.js"></script>
 
-            <% }) %>
+<section class="page">
+    <div class="page__head">
+        <div>
+            <p class="eyebrow">Cadastro</p>
+            <h1 class="page__title">Indisponibilidades</h1>
+            <p class="page__sub">Períodos em que um acólito não pode ser escalado.</p>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-outline-accent" href="/indisponivel/cadastrar"><i class="bi bi-plus-lg"></i> Nova indisponibilidade</a>
+        </div>
+    </div>
+
+    <div class="card panel">
+        <div class="panel__tools">
+            <label class="search">
+                <i class="bi bi-search"></i>
+                <input type="text" class="form-control" data-table-filter placeholder="Buscar acólito ou motivo&hellip;" aria-label="Buscar indisponibilidade">
+            </label>
+            <span class="panel__count"></span>
+        </div>
+
+        <% if (indisponivel_list && indisponivel_list.length > 0) { %>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Acólito</th>
+                            <th>Período</th>
+                            <th>Motivo</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% indisponivel_list.forEach(indisponivel => { %>
+                            <tr>
+                                <td class="cell-primary">
+                                    <a href="/indisponivel/alterar/<%= indisponivel.ind_id %>"><%= indisponivel.acolito.aco_nome %></a>
+                                </td>
+                                <td class="cell-muted">
+                                    <%= new Date(indisponivel.ind_data_inicio).toLocaleDateString('pt-BR') %>
+                                    &ndash;
+                                    <%= new Date(indisponivel.ind_data_fim).toLocaleDateString('pt-BR') %>
+                                </td>
+                                <td class="cell-muted"><%= indisponivel.ind_motivo || '—' %></td>
+                                <td class="cell-actions">
+                                    <a class="icon-btn" href="/indisponivel/alterar/<%= indisponivel.ind_id %>" aria-label="Editar indisponibilidade"><i class="bi bi-pencil"></i></a>
+                                    <button type="button" class="icon-btn icon-btn--danger btn-excluir" data-id="<%= indisponivel.ind_id %>" aria-label="Excluir indisponibilidade"><i class="bi bi-trash3"></i></button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         <% } else { %>
-            <p>No Indisponivel found</p>
+            <div class="empty">
+                <i class="bi bi-calendar-x empty__icon"></i>
+                Nenhuma indisponibilidade registrada. <a href="/indisponivel/cadastrar">Registrar a primeira</a>.
+            </div>
         <% } %>
     </div>
-</div>
+</section>

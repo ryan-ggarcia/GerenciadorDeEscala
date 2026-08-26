@@ -1,27 +1,34 @@
 <script src="/js/funcao/cadastrar.js"></script>
-<div>
-    <h1>Cadastrar Função</h1>
-    <div>
+
+<section class="page">
+    <div class="page__head">
         <div>
-            <div>
-                <i></i>
-                <label for="">Nome</label>
-            </div>
-            <div>
-                <input type="text" name="nome" placeholder="Nome da Função" id="nome">
-            </div>
+            <p class="eyebrow">Funções</p>
+            <h1 class="page__title">Nova função</h1>
+            <p class="page__sub">Um papel exercido no altar durante a celebração.</p>
         </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="">Descrição</label>
-            </div>
-            <div>
-                <input type="text" name="descricao" placeholder="Descrição da Função" id="descricao">
-            </div>
-        </div>
-        <div>
-            <button type="button" id="btn-Cadastro">Cadastrar</button>
+        <div class="page__actions">
+            <a class="btn btn-ghost" href="/funcao"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
     </div>
-</div>
+
+    <form class="card form-card" onsubmit="return false">
+        <span class="form-card__accent" aria-hidden="true"></span>
+        <div class="form-card__body">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="nome">Nome</label>
+                    <input type="text" class="form-control" name="nome" id="nome" placeholder="Ex.: Turíbulo">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="descricao">Descrição <span class="text-body-tertiary">(opcional)</span></label>
+                    <input type="text" class="form-control" name="descricao" id="descricao" placeholder="O que faz quem exerce esta função">
+                </div>
+            </div>
+        </div>
+        <div class="form-card__foot">
+            <a class="btn btn-ghost" href="/funcao">Cancelar</a>
+            <button type="button" id="btn-Cadastro" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+</section>

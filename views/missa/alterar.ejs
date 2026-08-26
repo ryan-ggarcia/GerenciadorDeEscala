@@ -1,58 +1,47 @@
-<h1> Alterar Missa </h1>
 <script src="/js/missa/alterar.js"></script>
 
-<div>
-    <div>
+<section class="page">
+    <div class="page__head">
         <div>
-            <input type="text" hidden name="id" placeholder="Id da Missa" id="id" value="<%= findMissa.mis_id %>">
+            <p class="eyebrow">Missas</p>
+            <h1 class="page__title">Editar missa</h1>
+            <p class="page__sub">Ajuste os dados da celebração.</p>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-ghost" href="/missa"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
     </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Celebração</label>
+
+    <form class="card form-card" onsubmit="return false">
+        <span class="form-card__accent" aria-hidden="true"></span>
+        <input type="text" hidden name="id" id="id" value="<%= findMissa.mis_id %>">
+        <div class="form-card__body">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="name">Celebração</label>
+                    <input type="text" class="form-control" name="name" id="name" value="<%= findMissa.mis_nome %>" placeholder="Ex.: Missa de Domingo">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="date">Data</label>
+                    <input type="date" class="form-control" name="date" id="date" value="<%= new Date(findMissa.mis_dia).toISOString().split('T')[0] %>">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="timeStart">Horário inicial</label>
+                    <input type="time" class="form-control" name="timeStart" id="timeStart" value="<%= findMissa.mis_hora_inicio %>">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="timeEnd">Horário final</label>
+                    <input type="time" class="form-control" name="timeEnd" id="timeEnd" value="<%= findMissa.mis_hora_final %>">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="location">Local</label>
+                    <input type="text" class="form-control" name="location" id="location" value="<%= findMissa.mis_local %>" placeholder="Ex.: Igreja Matriz">
+                </div>
+            </div>
         </div>
-        <div>
-            <input type="text" name="name" placeholder="Nome da Missa" id="name" value="<%= findMissa.mis_nome %>">
+        <div class="form-card__foot">
+            <a class="btn btn-ghost" href="/missa">Cancelar</a>
+            <button type="button" id="btn-Alterar" class="btn btn-primary">Salvar alterações</button>
         </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Data</label>
-        </div>
-        <div>
-            <input type="date" name="date" id="date" value="<%= new Date(findMissa.mis_dia).toISOString().split('T')[0] %>">
-        </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Horário Inicial</label>
-        </div>
-        <div>
-            <input type="time" name="timeStart" id="timeStart" value="<%= findMissa.mis_hora_inicio %>">
-        </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Horário Final</label>
-        </div>
-        <div>
-            <input type="time" name="timeEnd" id="timeEnd" value="<%= findMissa.mis_hora_final %>">
-        </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Local</label>
-        </div>
-        <div>
-            <input type="text" name="location" placeholder="Local da Missa" id="location" value="<%= findMissa.mis_local %>">
-        </div>
-    </div>
-    <div>
-        <button type="button" id="btn-Alterar">Alterar</button>
-    </div>
-</div>
+    </form>
+</section>

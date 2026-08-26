@@ -1,65 +1,72 @@
-<h1> Alterar Escala </h1>
 <script src="/js/escala/alterar.js"></script>
 
-<div>
-    <div>
-        <div>
-            <input type="text" hidden name="id" placeholder="Id da Escala" id="id" value="<%= findEscala.esc_id %>">
-        </div>
+<section class="page">
+    <div class="mb-4">
+        <a class="btn btn-ghost" href="/escala"><i class="bi bi-arrow-left"></i> Voltar para as escalas</a>
     </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Missa</label>
+
+    <form class="card liturgy" onsubmit="return false">
+        <span class="liturgy__taper" aria-hidden="true"></span>
+        <input type="text" hidden name="id" id="id" value="<%= findEscala.esc_id %>">
+
+        <div class="liturgy__head">
+            <p class="eyebrow">Escala</p>
+            <h1 class="liturgy__title">Editar escala</h1>
         </div>
-        <div>
-            <select name="mis_id" id="mis_id">
-                <% missa_list.forEach(missa => { %>
-                    <option value="<%= missa.mis_id %>" <%= missa.mis_id === findEscala.mis_id ? 'selected' : '' %>><%= missa.mis_nome %> - <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %></option>
-                <% }) %>
-            </select>
+
+        <div class="liturgy__rows">
+            <div class="liturgy-row">
+                <span class="liturgy-row__mark" aria-hidden="true"><i class="bi bi-calendar2-week"></i></span>
+                <div class="liturgy-row__body">
+                    <label class="form-label" for="mis_id">Missa</label>
+                    <select class="form-select" name="mis_id" id="mis_id">
+                        <% missa_list.forEach(missa => { %>
+                            <option value="<%= missa.mis_id %>" <%= missa.mis_id === findEscala.mis_id ? 'selected' : '' %>><%= missa.mis_nome %> &mdash; <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="liturgy-row">
+                <span class="liturgy-row__mark" aria-hidden="true"><i class="bi bi-person"></i></span>
+                <div class="liturgy-row__body">
+                    <label class="form-label" for="aco_id">Acólito</label>
+                    <select class="form-select" name="aco_id" id="aco_id">
+                        <% acolitos_list.forEach(acolito => { %>
+                            <option value="<%= acolito.aco_id %>" <%= acolito.aco_id === findEscala.aco_id ? 'selected' : '' %>><%= acolito.aco_nome %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="liturgy-row">
+                <span class="liturgy-row__mark" aria-hidden="true"><i class="bi bi-bookmark-star"></i></span>
+                <div class="liturgy-row__body">
+                    <label class="form-label" for="fun_id">Função</label>
+                    <select class="form-select" name="fun_id" id="fun_id">
+                        <% funcao_list.forEach(funcao => { %>
+                            <option value="<%= funcao.fun_id %>" <%= funcao.fun_id === findEscala.fun_id ? 'selected' : '' %>><%= funcao.fun_nome %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+
+            <div class="liturgy-row">
+                <span class="liturgy-row__mark" aria-hidden="true"><i class="bi bi-check2-circle"></i></span>
+                <div class="liturgy-row__body">
+                    <label class="form-label" for="status">Situação</label>
+                    <select class="form-select" name="status" id="status">
+                        <option value="CONVOCADO" <%= findEscala.esc_status === 'CONVOCADO' ? 'selected' : '' %>>Convocado</option>
+                        <option value="CONFIRMADO" <%= findEscala.esc_status === 'CONFIRMADO' ? 'selected' : '' %>>Confirmado</option>
+                        <option value="RECUSADO" <%= findEscala.esc_status === 'RECUSADO' ? 'selected' : '' %>>Recusado</option>
+                    </select>
+                </div>
+            </div>
         </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Acólito</label>
+
+        <div class="liturgy__foot">
+            <a class="btn btn-ghost" href="/escala">Cancelar</a>
+            <button type="button" id="btn-Alterar" class="btn btn-primary">Salvar alterações</button>
         </div>
-        <div>
-            <select name="aco_id" id="aco_id">
-                <% acolitos_list.forEach(acolito => { %>
-                    <option value="<%= acolito.aco_id %>" <%= acolito.aco_id === findEscala.aco_id ? 'selected' : '' %>><%= acolito.aco_nome %></option>
-                <% }) %>
-            </select>
-        </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Função</label>
-        </div>
-        <div>
-            <select name="fun_id" id="fun_id">
-                <% funcao_list.forEach(funcao => { %>
-                    <option value="<%= funcao.fun_id %>" <%= funcao.fun_id === findEscala.fun_id ? 'selected' : '' %>><%= funcao.fun_nome %></option>
-                <% }) %>
-            </select>
-        </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Status</label>
-        </div>
-        <div>
-            <select name="status" id="status">
-                <option value="CONVOCADO" <%= findEscala.esc_status === 'CONVOCADO' ? 'selected' : '' %>>CONVOCADO</option>
-                <option value="CONFIRMADO" <%= findEscala.esc_status === 'CONFIRMADO' ? 'selected' : '' %>>CONFIRMADO</option>
-                <option value="RECUSADO" <%= findEscala.esc_status === 'RECUSADO' ? 'selected' : '' %>>RECUSADO</option>
-            </select>
-        </div>
-    </div>
-    <div>
-        <button type="button" id="btn-Alterar">Alterar</button>
-    </div>
-</div>
+    </form>
+</section>

@@ -1,31 +1,35 @@
-<h1> Alterar Função </h1>
 <script src="/js/funcao/alterar.js"></script>
 
-<div>
-    <div>
+<section class="page">
+    <div class="page__head">
         <div>
-            <input type="text" hidden name="id" placeholder="Id da Função" id="id" value="<%= findFuncao.fun_id %>">
+            <p class="eyebrow">Funções</p>
+            <h1 class="page__title">Editar função</h1>
+            <p class="page__sub">Atualize o nome ou a descrição da função.</p>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-ghost" href="/funcao"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
     </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Nome</label>
+
+    <form class="card form-card" onsubmit="return false">
+        <span class="form-card__accent" aria-hidden="true"></span>
+        <input type="text" hidden name="id" id="id" value="<%= findFuncao.fun_id %>">
+        <div class="form-card__body">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="nome">Nome</label>
+                    <input type="text" class="form-control" name="nome" id="nome" value="<%= findFuncao.fun_nome %>" placeholder="Ex.: Turíbulo">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="descricao">Descrição <span class="text-body-tertiary">(opcional)</span></label>
+                    <input type="text" class="form-control" name="descricao" id="descricao" value="<%= findFuncao.fun_descricao ?? '' %>" placeholder="O que faz quem exerce esta função">
+                </div>
+            </div>
         </div>
-        <div>
-            <input type="text" name="nome" placeholder="Nome da Função" id="nome" value="<%= findFuncao.fun_nome %>">
+        <div class="form-card__foot">
+            <a class="btn btn-ghost" href="/funcao">Cancelar</a>
+            <button type="button" id="btn-Alterar" class="btn btn-primary">Salvar alterações</button>
         </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Descrição</label>
-        </div>
-        <div>
-            <input type="text" name="descricao" placeholder="Descrição da Função" id="descricao" value="<%= findFuncao.fun_descricao ?? '' %>">
-        </div>
-    </div>
-    <div>
-        <button type="button" id="btn-Alterar">Alterar</button>
-    </div>
-</div>
+    </form>
+</section>

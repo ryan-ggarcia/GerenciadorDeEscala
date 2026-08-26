@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", function () {
-    let btn = document.querySelectorAll(".btn")
+    let btn = document.querySelectorAll(".btn-excluir")
     btn.forEach(b => { b.addEventListener("click", deletar) })
 })
 
