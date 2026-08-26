@@ -1,54 +1,46 @@
 <script src="/js/missa/cadastrar.js"></script>
-<div>
-    <h1>Cadastrar Missa</h1>
-    <div>
+
+<section class="page">
+    <div class="page__head">
         <div>
-            <div>
-                <i></i>
-                <label for="">Celebração</label>
-            </div>
-            <div>
-                <input type="text" name="name" placeholder="Nome da Missa" id="name">
-            </div>
+            <p class="eyebrow">Missas</p>
+            <h1 class="page__title">Nova missa</h1>
+            <p class="page__sub">Cadastre a celebração para depois montar a escala de acólitos.</p>
         </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="">Data</label>
-            </div>
-            <div>
-                <input type="date" name="date" id="date">
-            </div>
-        </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="">Horário Inicial</label>
-            </div>
-            <div>
-                <input type="time" name="timeStart" id="timeStart">
-            </div>
-        </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="">Horário Final</label>
-            </div>
-            <div>
-                <input type="time" name="timeEnd" id="timeEnd">
-            </div>
-        </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="">Local</label>
-            </div>
-            <div>
-                <input type="text" name="location" placeholder="Local da Missa" id="location">
-            </div>
-        </div>
-        <div>
-            <button type="button" id="btn-Cadastro">Cadastrar</button>
+        <div class="page__actions">
+            <a class="btn btn-ghost" href="/missa"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
     </div>
-</div>
+
+    <form class="card form-card" onsubmit="return false">
+        <span class="form-card__accent" aria-hidden="true"></span>
+        <div class="form-card__body">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="name">Celebração</label>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Ex.: Missa de Domingo">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="date">Data</label>
+                    <input type="date" class="form-control" name="date" id="date">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="timeStart">Horário inicial</label>
+                    <input type="time" class="form-control" name="timeStart" id="timeStart">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" for="timeEnd">Horário final</label>
+                    <input type="time" class="form-control" name="timeEnd" id="timeEnd">
+                </div>
+                <div class="col-12">
+                    <label class="form-label" for="location">Local</label>
+                    <input type="text" class="form-control" name="location" id="location" placeholder="Ex.: Igreja Matriz">
+                </div>
+            </div>
+        </div>
+        <div class="form-card__foot">
+            <a class="btn btn-ghost" href="/missa">Cancelar</a>
+            <button type="button" id="btn-Cadastro" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+</section>

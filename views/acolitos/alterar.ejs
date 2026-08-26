@@ -1,34 +1,38 @@
-<h1> Alterar Acólito </h1>
 <script src="/js/acolitos/alterar.js"></script>
 
-<div>
-    <div>
+<section class="page">
+    <div class="page__head">
         <div>
-            <input type="text" hidden name="id" placeholder="Id do Acólito" id="id" value="<%= findAcolito.aco_id %>">
+            <p class="eyebrow">Acólitos</p>
+            <h1 class="page__title">Editar acólito</h1>
+            <p class="page__sub">Atualize o nome ou a situação do acólito.</p>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-ghost" href="/acolitos"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
     </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Nome</label>
+
+    <form class="card form-card" onsubmit="return false">
+        <span class="form-card__accent" aria-hidden="true"></span>
+        <input type="text" hidden name="id" id="id" value="<%= findAcolito.aco_id %>">
+        <div class="form-card__body">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label" for="nome">Nome</label>
+                    <input type="text" class="form-control" name="nome" id="nome" value="<%= findAcolito.aco_nome %>" placeholder="Nome completo do acólito">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="status">Situação</label>
+                    <select class="form-select" name="status" id="status">
+                        <option value="ATIVO" <%= findAcolito.aco_status === 'ATIVO' ? 'selected' : '' %>>Ativo</option>
+                        <option value="INATIVO" <%= findAcolito.aco_status === 'INATIVO' ? 'selected' : '' %>>Inativo</option>
+                    </select>
+                </div>
+            </div>
         </div>
-        <div>
-            <input type="text" name="nome" placeholder="Nome do Acólito" id="nome" value="<%= findAcolito.aco_nome %>">
+        <div class="form-card__foot">
+            <a class="btn btn-ghost" href="/acolitos">Cancelar</a>
+            <button type="button" id="btn-Alterar" class="btn btn-primary">Salvar alterações</button>
         </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Status</label>
-        </div>
-        <div>
-            <select name="status" id="status">
-                <option value="ATIVO" <%= findAcolito.aco_status === 'ATIVO' ? 'selected' : '' %>>ATIVO</option>
-                <option value="INATIVO" <%= findAcolito.aco_status === 'INATIVO' ? 'selected' : '' %>>INATIVO</option>
-            </select>
-        </div>
-    </div>
-    <div>
-        <button type="button" id="btn-Alterar">Alterar</button>
-    </div>
-</div>
+    </form>
+</section>

@@ -1,46 +1,50 @@
 <script src="/js/acolitofuncao/cadastrar.js"></script>
-<div>
-    <h1>Cadastrar Acólito x Função</h1>
-    <div>
+
+<section class="page">
+    <div class="page__head">
         <div>
-            <div>
-                <i></i>
-                <label for="">Acólito</label>
-            </div>
-            <div>
-                <select name="aco_id" id="aco_id">
-                    <option value="">Selecione</option>
-                    <% acolitos_list.forEach(acolito => { %>
-                        <option value="<%= acolito.aco_id %>"><%= acolito.aco_nome %></option>
-                    <% }) %>
-                </select>
-            </div>
+            <p class="eyebrow">Habilitações</p>
+            <h1 class="page__title">Nova habilitação</h1>
+            <p class="page__sub">Vincule um acólito a uma função que ele está apto a exercer.</p>
         </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="">Função</label>
-            </div>
-            <div>
-                <select name="fun_id" id="fun_id">
-                    <option value="">Selecione</option>
-                    <% funcao_list.forEach(funcao => { %>
-                        <option value="<%= funcao.fun_id %>"><%= funcao.fun_nome %></option>
-                    <% }) %>
-                </select>
-            </div>
-        </div>
-        <div>
-            <div>
-                <i></i>
-                <label for="podeServir">Pode Servir</label>
-            </div>
-            <div>
-                <input type="checkbox" name="podeServir" id="podeServir" checked>
-            </div>
-        </div>
-        <div>
-            <button type="button" id="btn-Cadastro">Cadastrar</button>
+        <div class="page__actions">
+            <a class="btn btn-ghost" href="/acolitofuncao"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
     </div>
-</div>
+
+    <form class="card form-card" onsubmit="return false">
+        <span class="form-card__accent" aria-hidden="true"></span>
+        <div class="form-card__body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="aco_id">Acólito</label>
+                    <select class="form-select" name="aco_id" id="aco_id">
+                        <option value="">Selecione</option>
+                        <% acolitos_list.forEach(acolito => { %>
+                            <option value="<%= acolito.aco_id %>"><%= acolito.aco_nome %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="fun_id">Função</label>
+                    <select class="form-select" name="fun_id" id="fun_id">
+                        <option value="">Selecione</option>
+                        <% funcao_list.forEach(funcao => { %>
+                            <option value="<%= funcao.fun_id %>"><%= funcao.fun_nome %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" name="podeServir" id="podeServir" checked>
+                        <label class="form-check-label" for="podeServir">Pode servir nesta função</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-card__foot">
+            <a class="btn btn-ghost" href="/acolitofuncao">Cancelar</a>
+            <button type="button" id="btn-Cadastro" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+</section>

@@ -1,49 +1,50 @@
-<h1> Alterar Acólito x Função </h1>
 <script src="/js/acolitofuncao/alterar.js"></script>
 
-<div>
-    <div>
+<section class="page">
+    <div class="page__head">
         <div>
-            <input type="text" hidden name="old_aco_id" id="old_aco_id" value="<%= findAcolitoFuncao.aco_id %>">
-            <input type="text" hidden name="old_fun_id" id="old_fun_id" value="<%= findAcolitoFuncao.fun_id %>">
+            <p class="eyebrow">Habilitações</p>
+            <h1 class="page__title">Editar habilitação</h1>
+            <p class="page__sub">Ajuste o vínculo entre acólito e função.</p>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-ghost" href="/acolitofuncao"><i class="bi bi-arrow-left"></i> Voltar</a>
         </div>
     </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Acólito</label>
+
+    <form class="card form-card" onsubmit="return false">
+        <span class="form-card__accent" aria-hidden="true"></span>
+        <input type="text" hidden name="old_aco_id" id="old_aco_id" value="<%= findAcolitoFuncao.aco_id %>">
+        <input type="text" hidden name="old_fun_id" id="old_fun_id" value="<%= findAcolitoFuncao.fun_id %>">
+        <div class="form-card__body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="aco_id">Acólito</label>
+                    <select class="form-select" name="aco_id" id="aco_id">
+                        <% acolitos_list.forEach(acolito => { %>
+                            <option value="<%= acolito.aco_id %>" <%= acolito.aco_id === findAcolitoFuncao.aco_id ? 'selected' : '' %>><%= acolito.aco_nome %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="fun_id">Função</label>
+                    <select class="form-select" name="fun_id" id="fun_id">
+                        <% funcao_list.forEach(funcao => { %>
+                            <option value="<%= funcao.fun_id %>" <%= funcao.fun_id === findAcolitoFuncao.fun_id ? 'selected' : '' %>><%= funcao.fun_nome %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" name="podeServir" id="podeServir" <%= findAcolitoFuncao.pode_servir ? 'checked' : '' %>>
+                        <label class="form-check-label" for="podeServir">Pode servir nesta função</label>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div>
-            <select name="aco_id" id="aco_id">
-                <% acolitos_list.forEach(acolito => { %>
-                    <option value="<%= acolito.aco_id %>" <%= acolito.aco_id === findAcolitoFuncao.aco_id ? 'selected' : '' %>><%= acolito.aco_nome %></option>
-                <% }) %>
-            </select>
+        <div class="form-card__foot">
+            <a class="btn btn-ghost" href="/acolitofuncao">Cancelar</a>
+            <button type="button" id="btn-Alterar" class="btn btn-primary">Salvar alterações</button>
         </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="">Função</label>
-        </div>
-        <div>
-            <select name="fun_id" id="fun_id">
-                <% funcao_list.forEach(funcao => { %>
-                    <option value="<%= funcao.fun_id %>" <%= funcao.fun_id === findAcolitoFuncao.fun_id ? 'selected' : '' %>><%= funcao.fun_nome %></option>
-                <% }) %>
-            </select>
-        </div>
-    </div>
-    <div>
-        <div>
-            <i></i>
-            <label for="podeServir">Pode Servir</label>
-        </div>
-        <div>
-            <input type="checkbox" name="podeServir" id="podeServir" <%= findAcolitoFuncao.pode_servir ? 'checked' : '' %>>
-        </div>
-    </div>
-    <div>
-        <button type="button" id="btn-Alterar">Alterar</button>
-    </div>
-</div>
+    </form>
+</section>

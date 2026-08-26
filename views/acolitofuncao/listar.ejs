@@ -1,24 +1,65 @@
-<script src="/js/acolitofuncao/excluir.js" ></script>
-<h1>
-    Acólito x Função
-</h1>
-<div>
-    <div>
-        <% if(acolitofuncao_list && acolitofuncao_list.length > 0) { %>
-            <% acolitofuncao_list.forEach(acolitofuncao => { %>
-                <div>
-                     <a href="/acolitofuncao/alterar/<%= acolitofuncao.aco_id %>/<%= acolitofuncao.fun_id %>">
-                    <%= acolitofuncao.acolito.aco_nome %> - <%= acolitofuncao.funcao.fun_nome %> (pode servir: <%= acolitofuncao.pode_servir ? 'Sim' : 'Não' %>)
-                </a>
-                </div>
-               <div>
-                <i class="bi bi-trash"></i>
-                <button data-aco-id="<%= acolitofuncao.aco_id %>" data-fun-id="<%= acolitofuncao.fun_id %>" class="btn">Excluir</button>
-               </div>
+<script src="/js/acolitofuncao/excluir.js"></script>
 
-            <% }) %>
+<section class="page">
+    <div class="page__head">
+        <div>
+            <p class="eyebrow">Cadastro</p>
+            <h1 class="page__title">Habilitações</h1>
+            <p class="page__sub">Quais funções cada acólito está apto a exercer no altar.</p>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-outline-accent" href="/acolitofuncao/cadastrar"><i class="bi bi-plus-lg"></i> Nova habilitação</a>
+        </div>
+    </div>
+
+    <div class="card panel">
+        <div class="panel__tools">
+            <label class="search">
+                <i class="bi bi-search"></i>
+                <input type="text" class="form-control" data-table-filter placeholder="Buscar acólito ou função&hellip;" aria-label="Buscar habilitação">
+            </label>
+            <span class="panel__count"></span>
+        </div>
+
+        <% if (acolitofuncao_list && acolitofuncao_list.length > 0) { %>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Acólito</th>
+                            <th>Função</th>
+                            <th>Pode servir</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% acolitofuncao_list.forEach(acolitofuncao => { %>
+                            <tr>
+                                <td class="cell-primary">
+                                    <a href="/acolitofuncao/alterar/<%= acolitofuncao.aco_id %>/<%= acolitofuncao.fun_id %>"><%= acolitofuncao.acolito.aco_nome %></a>
+                                </td>
+                                <td class="cell-muted"><%= acolitofuncao.funcao.fun_nome %></td>
+                                <td>
+                                    <% if (acolitofuncao.pode_servir) { %>
+                                        <span class="badge-status badge-status--ok">Sim</span>
+                                    <% } else { %>
+                                        <span class="badge-status badge-status--muted">Não</span>
+                                    <% } %>
+                                </td>
+                                <td class="cell-actions">
+                                    <a class="icon-btn" href="/acolitofuncao/alterar/<%= acolitofuncao.aco_id %>/<%= acolitofuncao.fun_id %>" aria-label="Editar habilitação"><i class="bi bi-pencil"></i></a>
+                                    <button type="button" class="icon-btn icon-btn--danger btn-excluir" data-aco-id="<%= acolitofuncao.aco_id %>" data-fun-id="<%= acolitofuncao.fun_id %>" aria-label="Excluir habilitação"><i class="bi bi-trash3"></i></button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         <% } else { %>
-            <p>No AcolitoFuncao found</p>
+            <div class="empty">
+                <i class="bi bi-patch-check empty__icon"></i>
+                Nenhuma habilitação cadastrada. <a href="/acolitofuncao/cadastrar">Cadastrar a primeira</a>.
+            </div>
         <% } %>
     </div>
-</div>
+</section>
