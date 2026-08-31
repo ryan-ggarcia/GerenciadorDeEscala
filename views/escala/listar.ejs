@@ -6,7 +6,13 @@
             <p class="page__sub">Quem serve ao altar em cada celebração.</p>
         </div>
         <div class="page__actions">
-            <a class="btn btn-outline-accent" href="/escala/cadastrar"><i class="bi bi-plus-lg"></i> Escalar acólito</a>
+            <a class="btn btn-outline-accent" href="/escala/cadastrar"><i class="bi bi-plus-lg"></i> Escala Manual</a>
+        </div>
+        <div class="page__actions">
+            <a class="btn btn-primary" href="/escala/sorteador"><i class="bi bi-plus-lg"></i> Escala Automatica</a>
+        </div>
+        <div class="page__actions">
+            <button type="button" class="btn btn-ghost" id="btn-limpar-antigas"><i class="bi bi-trash3"></i> Limpar meses passados</button>
         </div>
     </div>
 
@@ -41,4 +47,5 @@
         status: e.esc_status
     }; })).replace(/</g, '\\u003c') %></script>
     <script src="/js/escala/calendario.js"></script>
+    <script src="/js/escala/limpar.js"></script>
 </section>
