@@ -1,0 +1,42 @@
+<script src="/js/escala/sorteador.js"></script>
+
+<section class="page">
+    <div class="mb-4">
+        <a class="btn btn-ghost" href="/escala"><i class="bi bi-arrow-left"></i> Voltar para as escalas</a>
+    </div>
+
+    <form class="card liturgy" onsubmit="return false">
+        <span class="liturgy__taper" aria-hidden="true"></span>
+
+        <div class="liturgy__head">
+            <p class="eyebrow">Escala</p>
+            <h1 class="liturgy__title">Sortear escala do mês</h1>
+            <p class="page__sub">Sorteia de uma vez todas as missas cadastradas no mês, respeitando disponibilidade e habilitações.</p>
+        </div>
+
+        <div class="liturgy__rows">
+            <div class="liturgy-row">
+                <span class="liturgy-row__mark" aria-hidden="true"><i class="bi bi-calendar-month"></i></span>
+                <div class="liturgy-row__body">
+                    <label class="form-label" for="mes">Mês</label>
+                    <select class="form-select" id="mes">
+                        <option value="">Selecione o mês</option>
+                        <% meses.forEach(m => { %>
+                            <option value="<%= m.ym %>"><%= m.rotulo %> &mdash; <%= m.qtd %> missa<%= m.qtd > 1 ? 's' : '' %></option>
+                        <% }) %>
+                    </select>
+                    <% if (!meses.length) { %>
+                        <p class="day-panel__empty mt-2">Nenhuma missa cadastrada ainda. <a href="/missa/cadastrar">Cadastre uma missa</a> primeiro.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <div class="liturgy__foot">
+            <a class="btn btn-ghost" href="/escala">Cancelar</a>
+            <button type="button" id="btn-Sortear" class="btn btn-primary"><i class="bi bi-shuffle"></i> Sortear mês</button>
+        </div>
+    </form>
+
+    <div class="card day-panel" id="proposta" hidden></div>
+</section>

@@ -72,4 +72,41 @@ export default class EscalaRepository{
         return rows.length > 0 ? rows[0] : null
     }
 
+    // Quantas escalas e missas caem antes do 1o dia do mes atual (previa do dialogo).
+    static async contarMesesPassados(){
+        const { rows } = await pool.query(
+            `SELECT
+               (SELECT count(*)::int FROM escala e
+                  JOIN missa m ON m.mis_id = e.mis_id
+                  WHERE m.mis_dia < date_trunc('month', CURRENT_DATE)) AS escalas,
+               (SELECT count(*)::int FROM missa
+                  WHERE mis_dia < date_trunc('month', CURRENT_DATE))    AS missas`
+        )
+        return rows[0]
+    }
+
+    // Apaga escalas e missas de meses anteriores ao atual (escala antes por causa da FK).
+    static async limparMesesPassados(){
+        const client = await pool.connect()
+        try {
+            await client.query('BEGIN')
+            const esc = await client.query(
+                `DELETE FROM escala
+                 WHERE mis_id IN (
+                   SELECT mis_id FROM missa WHERE mis_dia < date_trunc('month', CURRENT_DATE)
+                 )`
+            )
+            const mis = await client.query(
+                `DELETE FROM missa WHERE mis_dia < date_trunc('month', CURRENT_DATE)`
+            )
+            await client.query('COMMIT')
+            return { escalas: esc.rowCount, missas: mis.rowCount }
+        } catch (err) {
+            await client.query('ROLLBACK')
+            throw err
+        } finally {
+            client.release()
+        }
+    }
+
 }

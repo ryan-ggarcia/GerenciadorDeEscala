@@ -86,4 +86,27 @@ export default class EscalaController {
     }
   }
 
+  // GET /escala/limpar-antigas -> previa: quantas escalas/missas seriam apagadas
+  static async limparAntigasContar(req, res){
+    try{
+      return res.json(await EscalaRepository.contarMesesPassados())
+    }
+    catch(err){
+      console.log(err)
+      return res.status(500).json({ ok: false })
+    }
+  }
+
+  // POST /escala/limpar-antigas -> apaga escalas e missas de meses passados
+  static async limparAntigas(req, res){
+    try{
+      const { escalas, missas } = await EscalaRepository.limparMesesPassados()
+      return res.json({ ok: true, escalas, missas })
+    }
+    catch(err){
+      console.log(err)
+      return res.status(500).json({ ok: false })
+    }
+  }
+
 }
