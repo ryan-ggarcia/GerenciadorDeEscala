@@ -4,7 +4,7 @@ import MissaModel from '../model/MissaModel.js'
 import AcolitosModel from '../model/AcolitosModel.js'
 import FuncaoModel from '../model/FuncaoModel.js'
 
-export default class EscalaRepository{
+export default class EscalaDAO{
     static async getAll(){
         const { rows } = await pool.query(
             `SELECT e.*,
@@ -46,20 +46,16 @@ export default class EscalaRepository{
         return rows.length > 0 ? rows[0] : null
     }
 
-    static async create(dados){
+    static async create(escala){
         const { rows } = await pool.query('INSERT INTO escala (mis_id, aco_id, fun_id) VALUES ($1, $2, $3) RETURNING *',
-            [dados.mis_id, dados.aco_id, dados.fun_id])
-
-        rows.map(rows => new EscalaModel(rows.esc_id, rows.mis_id, rows.aco_id, rows.fun_id, rows.esc_status))
+            [escala.mis_id, escala.aco_id, escala.fun_id])
 
         return rows.length > 0 ? rows[0] : null
     }
 
-    static async update(dados){
+    static async update(escala){
         const { rows } = await pool.query('UPDATE escala SET mis_id = $1, aco_id = $2, fun_id = $3, esc_status = $4 WHERE esc_id = $5 RETURNING *',
-            [dados.mis_id, dados.aco_id, dados.fun_id, dados.status, dados.id])
-
-        rows.map(rows => new EscalaModel(rows.esc_id, rows.mis_id, rows.aco_id, rows.fun_id, rows.esc_status))
+            [escala.mis_id, escala.aco_id, escala.fun_id, escala.esc_status, escala.esc_id])
 
         return rows.length > 0 ? rows[0] : null
     }

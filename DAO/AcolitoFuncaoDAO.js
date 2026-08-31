@@ -3,7 +3,7 @@ import AcolitoFuncaoModel from '../model/AcolitoFuncaoModel.js'
 import AcolitosModel from '../model/AcolitosModel.js'
 import FuncaoModel from '../model/FuncaoModel.js'
 
-export default class AcolitoFuncaoRepository{
+export default class AcolitoFuncaoDAO{
     static async getAll(){
         const { rows } = await pool.query(
             `SELECT af.*, a.aco_nome, a.aco_status, f.fun_nome, f.fun_descricao
@@ -35,20 +35,16 @@ export default class AcolitoFuncaoRepository{
         return rows.length > 0 ? rows[0] : null
     }
 
-    static async create(dados){
+    static async create(acolitoFuncao){
         const { rows } = await pool.query('INSERT INTO acolito_funcao (aco_id, fun_id, pode_servir) VALUES ($1, $2, $3) RETURNING *',
-            [dados.aco_id, dados.fun_id, dados.podeServir])
-
-        rows.map(rows => new AcolitoFuncaoModel(rows.aco_id, rows.fun_id, rows.pode_servir))
+            [acolitoFuncao.aco_id, acolitoFuncao.fun_id, acolitoFuncao.pode_servir])
 
         return rows.length > 0 ? rows[0] : null
     }
 
-    static async update(dados){
+    static async update(acolitoFuncao, oldAcoId, oldFunId){
         const { rows } = await pool.query('UPDATE acolito_funcao SET aco_id = $1, fun_id = $2, pode_servir = $3 WHERE aco_id = $4 AND fun_id = $5 RETURNING *',
-            [dados.aco_id, dados.fun_id, dados.podeServir, dados.oldAcoId, dados.oldFunId])
-
-        rows.map(rows => new AcolitoFuncaoModel(rows.aco_id, rows.fun_id, rows.pode_servir))
+            [acolitoFuncao.aco_id, acolitoFuncao.fun_id, acolitoFuncao.pode_servir, oldAcoId, oldFunId])
 
         return rows.length > 0 ? rows[0] : null
     }

@@ -1,8 +1,8 @@
-import UserRepository from "../repositories/UserRepository.js";
+import UserDAO from "../DAO/UserDAO.js";
 
 export default class UserController {
     static async list(req, res) {
-        const users = await UserRepository.getAllUsers();
+        const users = await UserDAO.getAllUsers();
         res.status(200).json(users);
     }
 }

@@ -1,8 +1,9 @@
-import FuncaoRepository from "../repositories/FuncaoRepository.js";
+import FuncaoDAO from "../DAO/FuncaoDAO.js";
+import FuncaoModel from "../model/FuncaoModel.js";
 
 export default class FuncaoController {
   static async view(req, res) {
-    let funcao_list = await FuncaoRepository.getAll()
+    let funcao_list = await FuncaoDAO.getAll()
 
     res.render('funcao/listar.ejs', { funcao_list })
   }
@@ -12,7 +13,7 @@ export default class FuncaoController {
   }
 
   static async viewEdit(req, res) {
-    let findFuncao = await FuncaoRepository.findById(req.params.id)
+    let findFuncao = await FuncaoDAO.findById(req.params.id)
 
     res.render('funcao/alterar.ejs',{ findFuncao })
   }
@@ -24,7 +25,9 @@ export default class FuncaoController {
       if (!nome)
         return res.status(404).json({ ok: false })
 
-      let newFuncao = await FuncaoRepository.create({ nome: nome, descricao: descricao })
+      const funcao = new FuncaoModel(undefined, nome, descricao)
+
+      let newFuncao = await FuncaoDAO.create(funcao)
 
       if (newFuncao == null)
         return res.status(400).json({ ok: false })
@@ -44,7 +47,9 @@ export default class FuncaoController {
       if(!id || !nome)
         return res.status(404).json({ ok: false })
 
-      let updatedFuncao = await FuncaoRepository.update({ id: id, nome: nome, descricao: descricao })
+      const funcao = new FuncaoModel(id, nome, descricao)
+
+      let updatedFuncao = await FuncaoDAO.update(funcao)
 
       if (updatedFuncao == null)
         return res.status(400).json({ ok: false })
@@ -63,7 +68,7 @@ export default class FuncaoController {
       if ( !id )
         return res.status(404).json({ok: false})
 
-      let deleteFuncao = await FuncaoRepository.delete(id)
+      let deleteFuncao = await FuncaoDAO.delete(id)
 
       if( deleteFuncao == null )
         return res.status(500).json({ok:false})

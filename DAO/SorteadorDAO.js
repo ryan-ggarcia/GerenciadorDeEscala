@@ -1,6 +1,6 @@
 import pool from '../config/db.js'
 
-export default class SorteadorRepository {
+export default class SorteadorDAO {
 
     // Meses que tem pelo menos uma missa cadastrada (para o <select> da tela).
     static async mesesComMissa() {

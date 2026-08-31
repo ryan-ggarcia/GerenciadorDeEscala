@@ -1,25 +1,26 @@
-import AcolitoFuncaoRepository from "../repositories/AcolitoFuncaoRepository.js";
-import AcolitosRepository from "../repositories/AcolitosRepository.js";
-import FuncaoRepository from "../repositories/FuncaoRepository.js";
+import AcolitoFuncaoDAO from "../DAO/AcolitoFuncaoDAO.js";
+import AcolitosDAO from "../DAO/AcolitosDAO.js";
+import FuncaoDAO from "../DAO/FuncaoDAO.js";
+import AcolitoFuncaoModel from "../model/AcolitoFuncaoModel.js";
 
 export default class AcolitoFuncaoController {
   static async view(req, res) {
-    let acolitofuncao_list = await AcolitoFuncaoRepository.getAll()
+    let acolitofuncao_list = await AcolitoFuncaoDAO.getAll()
 
     res.render('acolitofuncao/listar.ejs', { acolitofuncao_list })
   }
 
   static async viewCreate(req, res) {
-    let acolitos_list = await AcolitosRepository.getAll()
-    let funcao_list = await FuncaoRepository.getAll()
+    let acolitos_list = await AcolitosDAO.getAll()
+    let funcao_list = await FuncaoDAO.getAll()
 
     res.render('acolitofuncao/cadastrar.ejs', { acolitos_list, funcao_list })
   }
 
   static async viewEdit(req, res) {
-    let findAcolitoFuncao = await AcolitoFuncaoRepository.findByIds(req.params.aco_id, req.params.fun_id)
-    let acolitos_list = await AcolitosRepository.getAll()
-    let funcao_list = await FuncaoRepository.getAll()
+    let findAcolitoFuncao = await AcolitoFuncaoDAO.findByIds(req.params.aco_id, req.params.fun_id)
+    let acolitos_list = await AcolitosDAO.getAll()
+    let funcao_list = await FuncaoDAO.getAll()
 
     res.render('acolitofuncao/alterar.ejs',{ findAcolitoFuncao, acolitos_list, funcao_list })
   }
@@ -31,7 +32,9 @@ export default class AcolitoFuncaoController {
       if (!aco_id || !fun_id)
         return res.status(404).json({ ok: false })
 
-      let newAcolitoFuncao = await AcolitoFuncaoRepository.create({ aco_id: aco_id, fun_id: fun_id, podeServir: podeServir })
+      const acolitoFuncao = new AcolitoFuncaoModel(aco_id, fun_id, podeServir)
+
+      let newAcolitoFuncao = await AcolitoFuncaoDAO.create(acolitoFuncao)
 
       if (newAcolitoFuncao == null)
         return res.status(400).json({ ok: false })
@@ -51,7 +54,9 @@ export default class AcolitoFuncaoController {
       if(!oldAcoId || !oldFunId || !aco_id || !fun_id)
         return res.status(404).json({ ok: false })
 
-      let updatedAcolitoFuncao = await AcolitoFuncaoRepository.update({ oldAcoId: oldAcoId, oldFunId: oldFunId, aco_id: aco_id, fun_id: fun_id, podeServir: podeServir })
+      const acolitoFuncao = new AcolitoFuncaoModel(aco_id, fun_id, podeServir)
+
+      let updatedAcolitoFuncao = await AcolitoFuncaoDAO.update(acolitoFuncao, oldAcoId, oldFunId)
 
       if (updatedAcolitoFuncao == null)
         return res.status(400).json({ ok: false })
@@ -70,7 +75,7 @@ export default class AcolitoFuncaoController {
       if ( !aco_id || !fun_id )
         return res.status(404).json({ok: false})
 
-      let deleteAcolitoFuncao = await AcolitoFuncaoRepository.delete(aco_id, fun_id)
+      let deleteAcolitoFuncao = await AcolitoFuncaoDAO.delete(aco_id, fun_id)
 
       if( deleteAcolitoFuncao == null )
         return res.status(500).json({ok:false})

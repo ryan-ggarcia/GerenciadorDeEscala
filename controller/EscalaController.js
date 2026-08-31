@@ -1,28 +1,29 @@
-import EscalaRepository from "../repositories/EscalaRepository.js";
-import MissaRepository from "../repositories/MissaRepository.js";
-import AcolitosRepository from "../repositories/AcolitosRepository.js";
-import FuncaoRepository from "../repositories/FuncaoRepository.js";
+import EscalaDAO from "../DAO/EscalaDAO.js";
+import MissaDAO from "../DAO/MissaDAO.js";
+import AcolitosDAO from "../DAO/AcolitosDAO.js";
+import FuncaoDAO from "../DAO/FuncaoDAO.js";
+import EscalaModel from "../model/EscalaModel.js";
 
 export default class EscalaController {
   static async view(req, res) {
-    let escala_list = await EscalaRepository.getAll()
+    let escala_list = await EscalaDAO.getAll()
 
     res.render('escala/listar.ejs', { escala_list })
   }
 
   static async viewCreate(req, res) {
-    let missa_list = await MissaRepository.getAll()
-    let acolitos_list = await AcolitosRepository.getAll()
-    let funcao_list = await FuncaoRepository.getAll()
+    let missa_list = await MissaDAO.getAll()
+    let acolitos_list = await AcolitosDAO.getAll()
+    let funcao_list = await FuncaoDAO.getAll()
 
     res.render('escala/cadastrar.ejs', { missa_list, acolitos_list, funcao_list })
   }
 
   static async viewEdit(req, res) {
-    let findEscala = await EscalaRepository.findById(req.params.id)
-    let missa_list = await MissaRepository.getAll()
-    let acolitos_list = await AcolitosRepository.getAll()
-    let funcao_list = await FuncaoRepository.getAll()
+    let findEscala = await EscalaDAO.findById(req.params.id)
+    let missa_list = await MissaDAO.getAll()
+    let acolitos_list = await AcolitosDAO.getAll()
+    let funcao_list = await FuncaoDAO.getAll()
 
     res.render('escala/alterar.ejs',{ findEscala, missa_list, acolitos_list, funcao_list })
   }
@@ -34,7 +35,9 @@ export default class EscalaController {
       if (!mis_id || !aco_id || !fun_id)
         return res.status(404).json({ ok: false })
 
-      let newEscala = await EscalaRepository.create({ mis_id: mis_id, aco_id: aco_id, fun_id: fun_id })
+      const escala = new EscalaModel(undefined, mis_id, aco_id, fun_id)
+
+      let newEscala = await EscalaDAO.create(escala)
 
       if (newEscala == null)
         return res.status(400).json({ ok: false })
@@ -54,7 +57,9 @@ export default class EscalaController {
       if(!id || !mis_id || !aco_id || !fun_id || !status)
         return res.status(404).json({ ok: false })
 
-      let updatedEscala = await EscalaRepository.update({ id: id, mis_id: mis_id, aco_id: aco_id, fun_id: fun_id, status: status })
+      const escala = new EscalaModel(id, mis_id, aco_id, fun_id, status)
+
+      let updatedEscala = await EscalaDAO.update(escala)
 
       if (updatedEscala == null)
         return res.status(400).json({ ok: false })
@@ -73,7 +78,7 @@ export default class EscalaController {
       if ( !id )
         return res.status(404).json({ok: false})
 
-      let deleteEscala = await EscalaRepository.delete(id)
+      let deleteEscala = await EscalaDAO.delete(id)
 
       if( deleteEscala == null )
         return res.status(500).json({ok:false})
@@ -89,7 +94,7 @@ export default class EscalaController {
   // GET /escala/limpar-antigas -> previa: quantas escalas/missas seriam apagadas
   static async limparAntigasContar(req, res){
     try{
-      return res.json(await EscalaRepository.contarMesesPassados())
+      return res.json(await EscalaDAO.contarMesesPassados())
     }
     catch(err){
       console.log(err)
@@ -100,7 +105,7 @@ export default class EscalaController {
   // POST /escala/limpar-antigas -> apaga escalas e missas de meses passados
   static async limparAntigas(req, res){
     try{
-      const { escalas, missas } = await EscalaRepository.limparMesesPassados()
+      const { escalas, missas } = await EscalaDAO.limparMesesPassados()
       return res.json({ ok: true, escalas, missas })
     }
     catch(err){

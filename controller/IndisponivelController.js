@@ -1,22 +1,23 @@
-import IndisponivelRepository from "../repositories/IndisponivelRepository.js";
-import AcolitosRepository from "../repositories/AcolitosRepository.js";
+import IndisponivelDAO from "../DAO/IndisponivelDAO.js";
+import AcolitosDAO from "../DAO/AcolitosDAO.js";
+import IndisponivelModel from "../model/IndisponivelModel.js";
 
 export default class IndisponivelController {
   static async view(req, res) {
-    let indisponivel_list = await IndisponivelRepository.getAll()
+    let indisponivel_list = await IndisponivelDAO.getAll()
 
     res.render('indisponivel/listar.ejs', { indisponivel_list })
   }
 
   static async viewCreate(req, res) {
-    let acolitos_list = await AcolitosRepository.getAll()
+    let acolitos_list = await AcolitosDAO.getAll()
 
     res.render('indisponivel/cadastrar.ejs', { acolitos_list })
   }
 
   static async viewEdit(req, res) {
-    let findIndisponivel = await IndisponivelRepository.findById(req.params.id)
-    let acolitos_list = await AcolitosRepository.getAll()
+    let findIndisponivel = await IndisponivelDAO.findById(req.params.id)
+    let acolitos_list = await AcolitosDAO.getAll()
 
     res.render('indisponivel/alterar.ejs',{ findIndisponivel, acolitos_list })
   }
@@ -28,7 +29,9 @@ export default class IndisponivelController {
       if (!aco_id || !dataInicio || !dataFim)
         return res.status(404).json({ ok: false })
 
-      let newIndisponivel = await IndisponivelRepository.create({ aco_id: aco_id, dataInicio: dataInicio, dataFim: dataFim, motivo: motivo })
+      const indisponivel = new IndisponivelModel(undefined, aco_id, dataInicio, dataFim, motivo)
+
+      let newIndisponivel = await IndisponivelDAO.create(indisponivel)
 
       if (newIndisponivel == null)
         return res.status(400).json({ ok: false })
@@ -48,7 +51,9 @@ export default class IndisponivelController {
       if(!id || !aco_id || !dataInicio || !dataFim)
         return res.status(404).json({ ok: false })
 
-      let updatedIndisponivel = await IndisponivelRepository.update({ id: id, aco_id: aco_id, dataInicio: dataInicio, dataFim: dataFim, motivo: motivo })
+      const indisponivel = new IndisponivelModel(id, aco_id, dataInicio, dataFim, motivo)
+
+      let updatedIndisponivel = await IndisponivelDAO.update(indisponivel)
 
       if (updatedIndisponivel == null)
         return res.status(400).json({ ok: false })
@@ -67,7 +72,7 @@ export default class IndisponivelController {
       if ( !id )
         return res.status(404).json({ok: false})
 
-      let deleteIndisponivel = await IndisponivelRepository.delete(id)
+      let deleteIndisponivel = await IndisponivelDAO.delete(id)
 
       if( deleteIndisponivel == null )
         return res.status(500).json({ok:false})

@@ -1,7 +1,7 @@
 import pool from '../config/db.js'
 import AcolitosModel from '../model/AcolitosModel.js'
 
-export default class AcolitosRepository{
+export default class AcolitosDAO{
     static async getAll(){
         const { rows } = await pool.query('SELECT * FROM acolito')
 
@@ -16,20 +16,16 @@ export default class AcolitosRepository{
         return rows.length > 0 ? rows[0] : null
     }
 
-    static async create(dados){
+    static async create(acolito){
         const { rows } = await pool.query('INSERT INTO acolito (aco_nome, aco_status) VALUES ($1, $2) RETURNING *',
-            [dados.nome, dados.status])
-
-        rows.map(rows => new AcolitosModel(rows.aco_id, rows.aco_nome, rows.aco_status))
+            [acolito.aco_nome, acolito.aco_status])
 
         return rows.length > 0 ? rows[0] : null
     }
 
-    static async update(dados){
+    static async update(acolito){
         const { rows } = await pool.query('UPDATE acolito SET aco_nome = $1, aco_status = $2 WHERE aco_id = $3 RETURNING *',
-            [dados.nome, dados.status, dados.id])
-
-        rows.map(rows => new AcolitosModel(rows.aco_id, rows.aco_nome, rows.aco_status))
+            [acolito.aco_nome, acolito.aco_status, acolito.aco_id])
 
         return rows.length > 0 ? rows[0] : null
     }

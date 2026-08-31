@@ -2,7 +2,7 @@ import pool from '../config/db.js'
 import IndisponivelModel from '../model/IndisponivelModel.js'
 import AcolitosModel from '../model/AcolitosModel.js'
 
-export default class IndisponivelRepository{
+export default class IndisponivelDAO{
     static async getAll(){
         const { rows } = await pool.query(
             `SELECT i.*, a.aco_nome, a.aco_status
@@ -30,20 +30,16 @@ export default class IndisponivelRepository{
         return rows.length > 0 ? rows[0] : null
     }
 
-    static async create(dados){
+    static async create(indisponivel){
         const { rows } = await pool.query('INSERT INTO indisponibilidade (aco_id, ind_data_inicio, ind_data_fim, ind_motivo) VALUES ($1, $2, $3, $4) RETURNING *',
-            [dados.aco_id, dados.dataInicio, dados.dataFim, dados.motivo])
-
-        rows.map(rows => new IndisponivelModel(rows.ind_id, rows.aco_id, rows.ind_data_inicio, rows.ind_data_fim, rows.ind_motivo))
+            [indisponivel.aco_id, indisponivel.ind_data_inicio, indisponivel.ind_data_fim, indisponivel.ind_motivo])
 
         return rows.length > 0 ? rows[0] : null
     }
 
-    static async update(dados){
+    static async update(indisponivel){
         const { rows } = await pool.query('UPDATE indisponibilidade SET aco_id = $1, ind_data_inicio = $2, ind_data_fim = $3, ind_motivo = $4 WHERE ind_id = $5 RETURNING *',
-            [dados.aco_id, dados.dataInicio, dados.dataFim, dados.motivo, dados.id])
-
-        rows.map(rows => new IndisponivelModel(rows.ind_id, rows.aco_id, rows.ind_data_inicio, rows.ind_data_fim, rows.ind_motivo))
+            [indisponivel.aco_id, indisponivel.ind_data_inicio, indisponivel.ind_data_fim, indisponivel.ind_motivo, indisponivel.ind_id])
 
         return rows.length > 0 ? rows[0] : null
     }

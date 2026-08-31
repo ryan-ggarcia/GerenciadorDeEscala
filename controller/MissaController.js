@@ -1,8 +1,9 @@
-import MissaRepository from "../repositories/MissaRepository.js";
+import MissaDAO from "../DAO/MissaDAO.js";
+import MissaModel from "../model/MissaModel.js";
 
 export default class MissaController {
   static async view(req, res) {
-    let missa_list = await MissaRepository.getAll()
+    let missa_list = await MissaDAO.getAll()
 
     res.render('missa/listar.ejs', { missa_list })
   }
@@ -12,7 +13,7 @@ export default class MissaController {
   }
 
   static async viewEdit(req, res) {
-    let findMissa = await MissaRepository.findById(req.params.id)
+    let findMissa = await MissaDAO.findById(req.params.id)
 
     res.render('missa/alterar.ejs',{ findMissa })
   }
@@ -24,7 +25,9 @@ export default class MissaController {
       if (!name || !date || !timeStart || !timeEnd || !location)
         return res.status(404).json({ ok: false })
 
-      let newMissa = await MissaRepository.create({ name: name, date: date, timeStart: timeStart, timeEnd: timeEnd, location: location })
+      const missa = new MissaModel(undefined, location, name, date, timeStart, timeEnd)
+
+      let newMissa = await MissaDAO.create(missa)
 
       if (newMissa == null)
         return res.status(400).json({ ok: false })
@@ -44,7 +47,9 @@ export default class MissaController {
       if(!id || !name || !date || !timeStart || !timeEnd || !location)
         return res.status(404).json({ ok: false })
 
-      let updatedMissa = await MissaRepository.update({ id: id, name: name, date: date, timeStart: timeStart, timeEnd: timeEnd, location: location })
+      const missa = new MissaModel(id, location, name, date, timeStart, timeEnd)
+
+      let updatedMissa = await MissaDAO.update(missa)
 
       if (updatedMissa == null)
         return res.status(400).json({ ok: false })
@@ -63,7 +68,7 @@ export default class MissaController {
       if ( !id )
         return res.status(404).json({ok: false})
 
-      let deleteMissa = await MissaRepository.delete(id)
+      let deleteMissa = await MissaDAO.delete(id)
 
       if( deleteMissa == null )
         return res.status(500).json({ok:false})

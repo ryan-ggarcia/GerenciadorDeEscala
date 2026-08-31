@@ -1,8 +1,9 @@
-import AcolitosRepository from "../repositories/AcolitosRepository.js";
+import AcolitosDAO from "../DAO/AcolitosDAO.js";
+import AcolitosModel from "../model/AcolitosModel.js";
 
 export default class AcolitosController {
   static async view(req, res) {
-    let acolitos_list = await AcolitosRepository.getAll()
+    let acolitos_list = await AcolitosDAO.getAll()
 
     res.render('acolitos/listar.ejs', { acolitos_list })
   }
@@ -12,7 +13,7 @@ export default class AcolitosController {
   }
 
   static async viewEdit(req, res) {
-    let findAcolito = await AcolitosRepository.findById(req.params.id)
+    let findAcolito = await AcolitosDAO.findById(req.params.id)
 
     res.render('acolitos/alterar.ejs',{ findAcolito })
   }
@@ -24,7 +25,9 @@ export default class AcolitosController {
       if (!nome || !status)
         return res.status(404).json({ ok: false })
 
-      let newAcolito = await AcolitosRepository.create({ nome: nome, status: status })
+      const acolito = new AcolitosModel(undefined, nome, status)
+
+      let newAcolito = await AcolitosDAO.create(acolito)
 
       if (newAcolito == null)
         return res.status(400).json({ ok: false })
@@ -44,7 +47,9 @@ export default class AcolitosController {
       if(!id || !nome || !status)
         return res.status(404).json({ ok: false })
 
-      let updatedAcolito = await AcolitosRepository.update({ id: id, nome: nome, status: status })
+      const acolito = new AcolitosModel(id, nome, status)
+
+      let updatedAcolito = await AcolitosDAO.update(acolito)
 
       if (updatedAcolito == null)
         return res.status(400).json({ ok: false })
@@ -63,7 +68,7 @@ export default class AcolitosController {
       if ( !id )
         return res.status(404).json({ok: false})
 
-      let deleteAcolito = await AcolitosRepository.delete(id)
+      let deleteAcolito = await AcolitosDAO.delete(id)
 
       if( deleteAcolito == null )
         return res.status(500).json({ok:false})

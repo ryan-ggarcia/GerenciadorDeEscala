@@ -1,6 +1,6 @@
-import MissaRepository from "../repositories/MissaRepository.js"
-import FuncaoRepository from "../repositories/FuncaoRepository.js"
-import SorteadorRepository from "../repositories/SorteadorRepository.js"
+import MissaDAO from "../DAO/MissaDAO.js"
+import FuncaoDAO from "../DAO/FuncaoDAO.js"
+import SorteadorDAO from "../DAO/SorteadorDAO.js"
 
 // Funcoes de cada tipo de missa, na ordem em que aparecem na escala.
 // Sao casadas com a tabela `funcao` pelo nome (ignorando acento e maiuscula).
@@ -71,7 +71,7 @@ const montarItens = (papeis, candByFun) => {
 export default class SorteadorController {
 
     static async view(req, res) {
-        const meses = (await SorteadorRepository.mesesComMissa())
+        const meses = (await SorteadorDAO.mesesComMissa())
             .map(m => ({ ym: m.ym, rotulo: rotuloMes(m.ym), qtd: m.qtd }))
         res.render("escala/sorteador.ejs", { meses })
     }
@@ -83,14 +83,14 @@ export default class SorteadorController {
             if (!mis_id)
                 return res.status(400).json({ ok: false, erro: 'Selecione a missa.' })
 
-            const missa = await MissaRepository.findById(mis_id)
+            const missa = await MissaDAO.findById(mis_id)
             if (!missa)
                 return res.status(404).json({ ok: false, erro: 'Missa nao encontrada.' })
 
-            const funcoes = await FuncaoRepository.getAll()
+            const funcoes = await FuncaoDAO.getAll()
             const papeis = resolverPapeis(solene, funcoes)
 
-            const linhas = await SorteadorRepository.candidatos(mis_id, diaISO(missa.mis_dia))
+            const linhas = await SorteadorDAO.candidatos(mis_id, diaISO(missa.mis_dia))
             const candByFun = new Map()
             for (const l of linhas) {
                 if (!candByFun.has(l.fun_id)) candByFun.set(l.fun_id, [])
@@ -108,7 +108,7 @@ export default class SorteadorController {
                     mis_hora_inicio: missa.mis_hora_inicio
                 },
                 solene: !!solene,
-                jaEscalados: await SorteadorRepository.contarEscalados(mis_id),
+                jaEscalados: await SorteadorDAO.contarEscalados(mis_id),
                 itens
             })
         } catch (err) {
@@ -125,15 +125,15 @@ export default class SorteadorController {
             if (!mes || !/^\d{4}-\d{2}$/.test(mes))
                 return res.status(400).json({ ok: false, erro: 'Selecione o mes.' })
 
-            const missas = await SorteadorRepository.missasDoMes(mes)
+            const missas = await SorteadorDAO.missasDoMes(mes)
             if (missas.length === 0)
                 return res.status(404).json({ ok: false, erro: 'Nenhuma missa cadastrada nesse mes.' })
 
-            const funcoes = await FuncaoRepository.getAll()
+            const funcoes = await FuncaoDAO.getAll()
             const misIds = missas.map(m => m.mis_id)
-            const linhas = await SorteadorRepository.candidatosLote(misIds)
+            const linhas = await SorteadorDAO.candidatosLote(misIds)
             const escalados = new Map(
-                (await SorteadorRepository.contarEscaladosLote(misIds)).map(r => [String(r.mis_id), r.qtd])
+                (await SorteadorDAO.contarEscaladosLote(misIds)).map(r => [String(r.mis_id), r.qtd])
             )
 
             // linhas -> Map<mis_id, Map<fun_id, [{aco_id, aco_nome, carga}]>>
@@ -210,7 +210,7 @@ export default class SorteadorController {
             if (linhas.length === 0)
                 return res.status(400).json({ ok: false, erro: 'Nenhum acolito para escalar.' })
 
-            await SorteadorRepository.salvarLote(linhas)
+            await SorteadorDAO.salvarLote(linhas)
             return res.status(201).json({ ok: true, total: linhas.length })
         } catch (err) {
             console.log(err)
