@@ -319,6 +319,19 @@ a:hover { color: var(--brand-700); }
 }
 .btn-ghost:hover { border-color: var(--ink); color: var(--ink); background: #fff; }
 
+/* verde para exportar planilha (Excel) */
+.btn-excel {
+  --bs-btn-bg: var(--ok);
+  --bs-btn-border-color: var(--ok);
+  --bs-btn-hover-bg: #345f45;
+  --bs-btn-hover-border-color: #345f45;
+  --bs-btn-active-bg: #345f45;
+  --bs-btn-active-border-color: #345f45;
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+}
+
 .btn-outline-accent {
   border: 1px solid var(--accent);
   background: transparent;

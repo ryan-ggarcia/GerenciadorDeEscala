@@ -68,7 +68,22 @@ export default class EscalaDAO{
         return rows.length > 0 ? rows[0] : null
     }
 
-    // Quantas escalas e missas caem antes do 1o dia do mes atual (previa do dialogo).
+    // Linhas planas para o relatorio em Excel, em ordem cronologica.
+    static async paraRelatorio(){
+        const { rows } = await pool.query(
+            `SELECT m.mis_id, m.mis_nome, m.mis_dia, m.mis_hora_inicio, m.mis_local,
+                    f.fun_nome, a.aco_nome
+             FROM escala e
+             JOIN missa m   ON m.mis_id = e.mis_id
+             JOIN acolito a ON a.aco_id = e.aco_id
+             JOIN funcao f  ON f.fun_id = e.fun_id
+             ORDER BY m.mis_dia, m.mis_hora_inicio, m.mis_id, f.fun_nome`
+        )
+        return rows
+    }
+
+    // Quantas escalas, missas e indisponibilidades caem antes do 1o dia do mes atual
+    // (previa do dialogo). Indisponibilidade so conta se todo o periodo ja terminou.
     static async contarMesesPassados(){
         const { rows } = await pool.query(
             `SELECT
@@ -76,12 +91,15 @@ export default class EscalaDAO{
                   JOIN missa m ON m.mis_id = e.mis_id
                   WHERE m.mis_dia < date_trunc('month', CURRENT_DATE)) AS escalas,
                (SELECT count(*)::int FROM missa
-                  WHERE mis_dia < date_trunc('month', CURRENT_DATE))    AS missas`
+                  WHERE mis_dia < date_trunc('month', CURRENT_DATE))    AS missas,
+               (SELECT count(*)::int FROM indisponibilidade
+                  WHERE ind_data_fim < date_trunc('month', CURRENT_DATE)) AS indisponibilidades`
         )
         return rows[0]
     }
 
-    // Apaga escalas e missas de meses anteriores ao atual (escala antes por causa da FK).
+    // Apaga escalas, missas e indisponibilidades de meses anteriores ao atual
+    // (escala antes da missa por causa da FK).
     static async limparMesesPassados(){
         const client = await pool.connect()
         try {
@@ -95,8 +113,12 @@ export default class EscalaDAO{
             const mis = await client.query(
                 `DELETE FROM missa WHERE mis_dia < date_trunc('month', CURRENT_DATE)`
             )
+            const ind = await client.query(
+                `DELETE FROM indisponibilidade
+                 WHERE ind_data_fim < date_trunc('month', CURRENT_DATE)`
+            )
             await client.query('COMMIT')
-            return { escalas: esc.rowCount, missas: mis.rowCount }
+            return { escalas: esc.rowCount, missas: mis.rowCount, indisponibilidades: ind.rowCount }
         } catch (err) {
             await client.query('ROLLBACK')
             throw err

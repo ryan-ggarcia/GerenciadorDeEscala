@@ -1,5 +1,5 @@
-// Limpa escalas e missas de meses anteriores ao mês atual (mantém o mês corrente
-// e os futuros). Mostra uma prévia com as contagens antes de confirmar.
+// Limpa escalas, missas e indisponibilidades de meses anteriores ao mês atual
+// (mantém o mês corrente e os futuros). Mostra uma prévia com as contagens antes de confirmar.
 document.addEventListener('DOMContentLoaded', function () {
     var btn = document.getElementById('btn-limpar-antigas');
     if (btn) btn.addEventListener('click', limpar);
@@ -13,12 +13,13 @@ function limpar() {
         .then(function (data) {
             var escalas = data.escalas || 0;
             var missas = data.missas || 0;
+            var indispon = data.indisponibilidades || 0;
 
-            if (!escalas && !missas) {
+            if (!escalas && !missas && !indispon) {
                 Swal.fire({
                     icon: 'info',
                     title: 'Nada a limpar',
-                    text: 'Não há escalas nem missas de meses anteriores a ' + mesAtual + '.',
+                    text: 'Não há registros de meses anteriores a ' + mesAtual + '.',
                     confirmButtonText: 'OK'
                 });
                 return;
@@ -27,8 +28,9 @@ function limpar() {
             Swal.fire({
                 icon: 'warning',
                 title: 'Limpar meses passados?',
-                html: 'Serão apagadas <b>' + escalas + '</b> escala(s) e <b>' + missas +
-                    '</b> missa(s) de meses anteriores a <b>' + mesAtual + '</b>.<br>Esta ação não pode ser desfeita.',
+                html: 'Serão apagadas <b>' + escalas + '</b> escala(s), <b>' + missas +
+                    '</b> missa(s) e <b>' + indispon + '</b> indisponibilidade(s) de meses anteriores a <b>' +
+                    mesAtual + '</b>.<br>Esta ação não pode ser desfeita.',
                 showCancelButton: true,
                 confirmButtonText: 'Apagar',
                 confirmButtonColor: '#a1382c',
@@ -41,8 +43,9 @@ function limpar() {
                         if (!res.ok || !d.ok) throw new Error('Não foi possível limpar.');
                         await Swal.fire({
                             icon: 'success',
-                            title: d.escalas + ' escala(s) e ' + d.missas + ' missa(s) removidas',
-                            timer: 2200,
+                            title: d.escalas + ' escala(s), ' + d.missas + ' missa(s) e ' +
+                                d.indisponibilidades + ' indisponibilidade(s) removidas',
+                            timer: 2400,
                             showConfirmButton: false
                         });
                         window.location.reload();

@@ -5,6 +5,7 @@ import SorteadorController from '../controller/SorteadorController.js';
 const router = express.Router()
 
 router.get('/', EscalaController.view);
+router.get('/exportar', EscalaController.exportar);
 router.get('/limpar-antigas', EscalaController.limparAntigasContar);
 router.post('/limpar-antigas', EscalaController.limparAntigas);
 router.get('/sorteador', SorteadorController.view);

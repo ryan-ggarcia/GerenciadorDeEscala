@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar &middot; Gestão de Escala</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="/css/login.css" rel="stylesheet">
+</head>
+<body>
+    <main class="login">
+        <form class="login-card" method="POST" action="/login">
+            <span class="login-card__taper" aria-hidden="true"></span>
+            <span class="login-card__flame" aria-hidden="true"></span>
+
+            <div class="login-card__body">
+                <p class="login__eyebrow">Paróquia Rainha dos Apóstolos</p>
+                <h1 class="login__title">Gestão de Escala</h1>
+                <p class="login__lede">Entre para montar a escala de acólitos.</p>
+
+                <% if (typeof erro !== 'undefined' && erro) { %>
+                    <p class="login__erro" role="alert"><%= erro %></p>
+                <% } %>
+
+                <div class="login-field">
+                    <label class="login-label" for="usuario">Usuário</label>
+                    <input class="login-input" type="text" id="usuario" name="usuario"
+                           autocomplete="username" autofocus required
+                           value="<%= (typeof usuario !== 'undefined' && usuario) ? usuario : '' %>">
+                </div>
+
+                <div class="login-field login-field--senha">
+                    <label class="login-label" for="senha">Senha</label>
+                    <input class="login-input" type="password" id="senha" name="senha"
+                           autocomplete="current-password" required>
+                    <button class="login-toggle" type="button" data-toggle-senha aria-label="Mostrar senha">
+                        <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.5 0 10 8 10 8a13.3 13.3 0 0 1-1.67 2.68"/>
+                            <path d="M6.6 6.6C3.9 8.3 2 12 2 12s3.5 7 10 7a9 9 0 0 0 5.4-1.6"/>
+                            <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+                            <path d="m2 2 20 20"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <button class="login__submit" type="submit">Entrar</button>
+
+                <p class="login__foot"><span aria-hidden="true">&#10013;</span> Acesso restrito à equipe da sacristia.</p>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        (function () {
+            var btn = document.querySelector('[data-toggle-senha]');
+            var input = document.getElementById('senha');
+            if (!btn || !input) return;
+            btn.addEventListener('click', function () {
+                var show = input.type === 'password';
+                input.type = show ? 'text' : 'password';
+                btn.classList.toggle('is-showing', show);
+                btn.setAttribute('aria-label', show ? 'Ocultar senha' : 'Mostrar senha');
+                input.focus();
+            });
+        })();
+    </script>
+</body>
+</html>

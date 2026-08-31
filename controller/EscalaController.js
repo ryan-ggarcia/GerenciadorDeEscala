@@ -1,8 +1,13 @@
+import ExcelJS from "exceljs";
 import EscalaDAO from "../DAO/EscalaDAO.js";
 import MissaDAO from "../DAO/MissaDAO.js";
 import AcolitosDAO from "../DAO/AcolitosDAO.js";
 import FuncaoDAO from "../DAO/FuncaoDAO.js";
 import EscalaModel from "../model/EscalaModel.js";
+
+// Ordem preferida das colunas de função (comum primeiro, depois as de missa solene).
+const ORDEM_FUNCOES = ['Missal', 'Auxiliar', 'Vela 1', 'Vela 2', 'Turíbulo', 'Gaveta']
+const semAcento = (s) => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toLowerCase()
 
 export default class EscalaController {
   static async view(req, res) {
@@ -91,7 +96,7 @@ export default class EscalaController {
     }
   }
 
-  // GET /escala/limpar-antigas -> previa: quantas escalas/missas seriam apagadas
+  // GET /escala/limpar-antigas -> previa: quantas escalas/missas/indisponibilidades seriam apagadas
   static async limparAntigasContar(req, res){
     try{
       return res.json(await EscalaDAO.contarMesesPassados())
@@ -102,11 +107,78 @@ export default class EscalaController {
     }
   }
 
-  // POST /escala/limpar-antigas -> apaga escalas e missas de meses passados
+  // POST /escala/limpar-antigas -> apaga escalas, missas e indisponibilidades de meses passados
   static async limparAntigas(req, res){
     try{
-      const { escalas, missas } = await EscalaDAO.limparMesesPassados()
-      return res.json({ ok: true, escalas, missas })
+      const { escalas, missas, indisponibilidades } = await EscalaDAO.limparMesesPassados()
+      return res.json({ ok: true, escalas, missas, indisponibilidades })
+    }
+    catch(err){
+      console.log(err)
+      return res.status(500).json({ ok: false })
+    }
+  }
+
+  // GET /escala/exportar -> planilha .xlsx: 1 linha por missa, 1 coluna por função,
+  // com o nome do(s) acólito(s) sorteado(s) na célula.
+  static async exportar(req, res){
+    try{
+      const linhas = await EscalaDAO.paraRelatorio()
+
+      // agrupa por missa e coleta as funções que realmente aparecem
+      const missas = new Map()
+      const funcoesVistas = new Set()
+      for (const l of linhas){
+        funcoesVistas.add(l.fun_nome)
+        if (!missas.has(l.mis_id)){
+          missas.set(l.mis_id, { nome: l.mis_nome, dia: l.mis_dia, hora: l.mis_hora_inicio, local: l.mis_local, funcoes: {} })
+        }
+        const m = missas.get(l.mis_id)
+        ;(m.funcoes[l.fun_nome] = m.funcoes[l.fun_nome] || []).push(l.aco_nome)
+      }
+
+      // colunas de função: as da ORDEM_FUNCOES que apareceram, depois qualquer outra
+      const colunasFuncao = []
+      for (const nome of ORDEM_FUNCOES){
+        const real = [...funcoesVistas].find(f => semAcento(f) === semAcento(nome))
+        if (real) colunasFuncao.push(real)
+      }
+      for (const f of funcoesVistas) if (!colunasFuncao.includes(f)) colunasFuncao.push(f)
+
+      const wb = new ExcelJS.Workbook()
+      const ws = wb.addWorksheet('Escalas')
+      ws.columns = [
+        { header: 'Missa',   key: 'missa', width: 30 },
+        { header: 'Data',    key: 'data',  width: 12 },
+        { header: 'Horário', key: 'hora',  width: 10 },
+        { header: 'Local',   key: 'local', width: 24 },
+        ...colunasFuncao.map((c, i) => ({ header: c, key: 'f' + i, width: 18 }))
+      ]
+
+      for (const m of missas.values()){
+        const linha = {
+          missa: m.nome || '',
+          data:  m.dia  ? new Date(m.dia).toLocaleDateString('pt-BR') : '',
+          hora:  m.hora ? String(m.hora).slice(0, 5) : '',
+          local: m.local || ''
+        }
+        colunasFuncao.forEach((c, i) => { linha['f' + i] = (m.funcoes[c] || []).join(', ') })
+        ws.addRow(linha)
+      }
+
+      // cabeçalho: azul-marinho, texto branco, congelado
+      const head = ws.getRow(1)
+      head.font = { bold: true, color: { argb: 'FFFFFFFF' } }
+      head.alignment = { vertical: 'middle' }
+      head.eachCell(cell => { cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF283A72' } } })
+      ws.views = [{ state: 'frozen', xSplit: 1, ySplit: 1 }]
+      ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: ws.columnCount } }
+
+      const hoje = new Date().toISOString().slice(0, 10)
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+      res.setHeader('Content-Disposition', `attachment; filename="escalas-${hoje}.xlsx"`)
+      await wb.xlsx.write(res)
+      res.end()
     }
     catch(err){
       console.log(err)
