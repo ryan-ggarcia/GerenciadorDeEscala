@@ -10,6 +10,7 @@ import EscalaRouter from './router/EscalaRouter.js'
 import HomeRouter from './router/HomeRouter.js'
 import AuthMiddleware from './middleware/authMiddleware.js'
 import cookieParser from 'cookie-parser'
+import { dataISO, dataBR } from './lib/data.js'
 
 const app = express()
 const port = 3000
@@ -18,11 +19,16 @@ app.set('view engine', 'ejs')
 app.set('views', './views')
 app.set('layout', 'layouts/layout')
 
+// helpers de data à prova de fuso, disponíveis em todos os templates
+app.locals.dataISO = dataISO   // -> 'YYYY-MM-DD'
+app.locals.dataBR = dataBR     // -> 'DD/MM/YYYY'
+
 app.use(expressEjsLayouts)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 app.use(express.json())
 app.use(cookieParser())
+app.use(AuthMiddleware.exporLogin)   // res.locals.logado em todos os templates
 
 app.use('/escala', EscalaRouter)
 app.use('/', HomeRouter)

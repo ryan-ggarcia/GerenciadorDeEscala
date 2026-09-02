@@ -21,7 +21,7 @@
                     <label class="form-label" for="mis_id">Missa</label>
                     <select class="form-select" name="mis_id" id="mis_id">
                         <% missa_list.forEach(missa => { %>
-                            <option value="<%= missa.mis_id %>" <%= missa.mis_id === findEscala.mis_id ? 'selected' : '' %>><%= missa.mis_nome %> &mdash; <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %></option>
+                            <option value="<%= missa.mis_id %>" <%= missa.mis_id === findEscala.mis_id ? 'selected' : '' %>><%= missa.mis_nome %> &mdash; <%= dataBR(missa.mis_dia) %></option>
                         <% }) %>
                     </select>
                 </div>

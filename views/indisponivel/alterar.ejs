@@ -27,11 +27,11 @@
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="dataInicio">Data inicial</label>
-                    <input type="date" class="form-control" name="dataInicio" id="dataInicio" value="<%= new Date(findIndisponivel.ind_data_inicio).toISOString().split('T')[0] %>">
+                    <input type="date" class="form-control" name="dataInicio" id="dataInicio" value="<%= dataISO(findIndisponivel.ind_data_inicio) %>">
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="dataFim">Data final</label>
-                    <input type="date" class="form-control" name="dataFim" id="dataFim" value="<%= new Date(findIndisponivel.ind_data_fim).toISOString().split('T')[0] %>">
+                    <input type="date" class="form-control" name="dataFim" id="dataFim" value="<%= dataISO(findIndisponivel.ind_data_fim) %>">
                 </div>
                 <div class="col-12">
                     <label class="form-label" for="motivo">Motivo <span class="text-body-tertiary">(opcional)</span></label>

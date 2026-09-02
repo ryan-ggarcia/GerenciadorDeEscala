@@ -5,15 +5,17 @@
             <h1 class="page__title">Escalas</h1>
             <p class="page__sub">Quem serve ao altar em cada celebração.</p>
         </div>
+        <% if (logado) { %>
         <div class="page__actions">
             <a class="btn btn-outline-accent" href="/escala/cadastrar"><i class="bi bi-plus-lg"></i> Escala Manual</a>
             <a class="btn btn-primary" href="/escala/sorteador"><i class="bi bi-plus-lg"></i> Escala Automática</a>
             <a class="btn btn-excel" href="/escala/exportar"><i class="bi bi-file-earmark-excel"></i> Exportar Excel</a>
             <button type="button" class="btn btn-ghost" id="btn-limpar-antigas"><i class="bi bi-trash3"></i> Limpar meses passados</button>
         </div>
+        <% } %>
     </div>
 
-    <div class="card calendar" id="calendar">
+    <div class="card calendar" id="calendar" data-logado="<%= logado ? '1' : '' %>">
         <div class="calendar__bar">
             <h2 class="calendar__month" data-cal-label>&nbsp;</h2>
             <div class="calendar__nav">
@@ -30,13 +32,13 @@
     <% if (!escala_list || escala_list.length === 0) { %>
         <div class="empty">
             <i class="bi bi-list-check empty__icon"></i>
-            Nenhuma escala montada ainda. <a href="/escala/cadastrar">Escalar o primeiro acólito</a>.
+            Nenhuma escala montada ainda.<% if (logado) { %> <a href="/escala/cadastrar">Escalar o primeiro acólito</a>.<% } %>
         </div>
     <% } %>
 
     <script id="escala-data" type="application/json"><%- JSON.stringify((escala_list || []).map(function (e) { return {
         id: e.esc_id,
-        dia: e.missa.mis_dia,
+        dia: dataISO(e.missa.mis_dia),
         missa: e.missa.mis_nome,
         hora: e.missa.mis_hora_inicio,
         acolito: e.acolito.aco_nome,

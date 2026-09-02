@@ -24,13 +24,16 @@ function alterar(){
                 motivo: motivo.value
             })
         })
-            .then(res => {
-
+            .then(async res => {
+                const data = await res.json().catch(() => ({}));
                 if (res.ok) {
+                    const n = data.escalasRemovidas || 0;
                     Swal.fire({
                         icon: 'success',
-                        title: 'Alteração realizada com sucesso',
-                        text: 'A indisponibilidade foi alterada com sucesso.',
+                        title: 'Indisponibilidade alterada',
+                        text: n
+                            ? n + ' escalação(ões) do acólito no novo período foram removidas.'
+                            : 'A indisponibilidade foi alterada com sucesso.',
                         confirmButtonText: 'OK'
                     });
                 } else {

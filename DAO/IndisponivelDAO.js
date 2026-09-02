@@ -52,4 +52,19 @@ export default class IndisponivelDAO{
         return rows.length > 0 ? rows[0] : null
     }
 
+    // Tira o acolito de qualquer escala em missas dentro do periodo (inclusive nas pontas).
+    // Retorna quantas escalacoes foram removidas.
+    static async removerEscalasNoPeriodo(aco_id, dataInicio, dataFim){
+        const { rows } = await pool.query(
+            `DELETE FROM escala e
+             USING missa m
+             WHERE e.mis_id = m.mis_id
+               AND e.aco_id = $1
+               AND m.mis_dia BETWEEN $2::date AND $3::date
+             RETURNING e.esc_id`,
+            [aco_id, dataInicio, dataFim]
+        )
+        return rows.length
+    }
+
 }

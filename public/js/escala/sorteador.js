@@ -15,7 +15,11 @@ function esc(v) {
 }
 
 function horaBR(h) { return h ? String(h).slice(0, 5) : ''; }
-function dataBR(d) { return new Date(d).toLocaleDateString('pt-BR'); }
+// a data vem do servidor como 'YYYY-MM-DD' — tratar como texto (sem new Date, sem fuso)
+function dataBR(d) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d || ''));
+    return m ? m[3] + '/' + m[2] + '/' + m[1] : String(d || '');
+}
 
 // mis_id das missas marcadas como solene na prévia atual (vazio na 1ª vez)
 function solenesMarcadas() {
@@ -225,7 +229,16 @@ function salvar() {
             .then(async function (res) {
                 const data = await res.json().catch(function () { return {}; });
                 if (!res.ok || !data.ok) throw new Error(data.erro || 'Não foi possível salvar.');
-                await Swal.fire({ icon: 'success', title: 'Escala do mês salva', timer: 1800, showConfirmButton: false });
+                if (data.ignorados) {
+                    await Swal.fire({
+                        icon: 'warning',
+                        title: 'Escala salva',
+                        text: data.ignorados + ' escalação(ões) foram ignoradas porque o acólito está indisponível na data.',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    await Swal.fire({ icon: 'success', title: 'Escala do mês salva', timer: 1800, showConfirmButton: false });
+                }
                 window.location.href = '/escala';
             })
             .catch(function (err) {

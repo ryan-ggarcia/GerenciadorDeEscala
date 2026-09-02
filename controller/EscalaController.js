@@ -4,6 +4,7 @@ import MissaDAO from "../DAO/MissaDAO.js";
 import AcolitosDAO from "../DAO/AcolitosDAO.js";
 import FuncaoDAO from "../DAO/FuncaoDAO.js";
 import EscalaModel from "../model/EscalaModel.js";
+import { dataBR } from "../lib/data.js";
 
 // Ordem preferida das colunas de função (comum primeiro, depois as de missa solene).
 const ORDEM_FUNCOES = ['Missal', 'Auxiliar', 'Vela 1', 'Vela 2', 'Turíbulo', 'Gaveta']
@@ -158,7 +159,7 @@ export default class EscalaController {
       for (const m of missas.values()){
         const linha = {
           missa: m.nome || '',
-          data:  m.dia  ? new Date(m.dia).toLocaleDateString('pt-BR') : '',
+          data:  dataBR(m.dia),
           hora:  m.hora ? String(m.hora).slice(0, 5) : '',
           local: m.local || ''
         }

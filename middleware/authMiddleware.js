@@ -7,4 +7,12 @@ export default class AuthMiddleware {
         }
         return res.redirect('/login')
     }
+
+    // Não bloqueia nada: só deixa `logado` disponível nos templates para
+    // mostrar/esconder os botões de administração (editar, excluir, escalar...).
+    static exporLogin(req, res, next) {
+        const id = req.cookies?.usuarioLogado
+        res.locals.logado = id != undefined && id == 1
+        next()
+    }
 }

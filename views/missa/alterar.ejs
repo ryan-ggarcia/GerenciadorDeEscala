@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" for="date">Data</label>
-                    <input type="date" class="form-control" name="date" id="date" value="<%= new Date(findMissa.mis_dia).toISOString().split('T')[0] %>">
+                    <input type="date" class="form-control" name="date" id="date" value="<%= dataISO(findMissa.mis_dia) %>">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" for="timeStart">Horário inicial</label>

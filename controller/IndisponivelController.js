@@ -36,7 +36,10 @@ export default class IndisponivelController {
       if (newIndisponivel == null)
         return res.status(400).json({ ok: false })
 
-      return res.status(201).json({ ok: true })
+      // tira o acólito de escalas já montadas que caem nesse período
+      const escalasRemovidas = await IndisponivelDAO.removerEscalasNoPeriodo(aco_id, dataInicio, dataFim)
+
+      return res.status(201).json({ ok: true, escalasRemovidas })
     }
     catch (err) {
       console.log(err)
@@ -58,7 +61,10 @@ export default class IndisponivelController {
       if (updatedIndisponivel == null)
         return res.status(400).json({ ok: false })
 
-      return res.status(201).json({ ok: true })
+      // tira o acólito de escalas já montadas que caem no novo período
+      const escalasRemovidas = await IndisponivelDAO.removerEscalasNoPeriodo(aco_id, dataInicio, dataFim)
+
+      return res.status(201).json({ ok: true, escalasRemovidas })
     }
     catch(err){
       console.log(err)

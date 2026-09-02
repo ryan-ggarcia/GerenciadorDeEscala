@@ -21,7 +21,7 @@
                     <select class="form-select" name="mis_id" id="mis_id">
                         <option value="">Selecione a celebração</option>
                         <% missa_list.forEach(missa => { %>
-                            <option value="<%= missa.mis_id %>"><%= missa.mis_nome %> &mdash; <%= new Date(missa.mis_dia).toLocaleDateString('pt-BR') %></option>
+                            <option value="<%= missa.mis_id %>"><%= missa.mis_nome %> &mdash; <%= dataBR(missa.mis_dia) %></option>
                         <% }) %>
                     </select>
                 </div>

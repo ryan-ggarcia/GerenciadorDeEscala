@@ -22,13 +22,16 @@ function cadastrar() {
                 motivo: motivo.value
             })
         })
-            .then(res => {
-
+            .then(async res => {
+                const data = await res.json().catch(() => ({}));
                 if (res.ok) {
+                    const n = data.escalasRemovidas || 0;
                     Swal.fire({
                         icon: 'success',
-                        title: 'Cadastro realizado com sucesso',
-                        text: 'A indisponibilidade foi cadastrada com sucesso.',
+                        title: 'Indisponibilidade cadastrada',
+                        text: n
+                            ? n + ' escalação(ões) do acólito nesse período foram removidas.'
+                            : 'A indisponibilidade foi cadastrada com sucesso.',
                         confirmButtonText: 'OK'
                     });
                 } else {

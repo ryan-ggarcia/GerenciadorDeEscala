@@ -39,9 +39,9 @@
                                     <a href="/indisponivel/alterar/<%= indisponivel.ind_id %>"><%= indisponivel.acolito.aco_nome %></a>
                                 </td>
                                 <td class="cell-muted">
-                                    <%= new Date(indisponivel.ind_data_inicio).toLocaleDateString('pt-BR') %>
+                                    <%= dataBR(indisponivel.ind_data_inicio) %>
                                     &ndash;
-                                    <%= new Date(indisponivel.ind_data_fim).toLocaleDateString('pt-BR') %>
+                                    <%= dataBR(indisponivel.ind_data_fim) %>
                                 </td>
                                 <td class="cell-muted"><%= indisponivel.ind_motivo || '—' %></td>
                                 <td class="cell-actions">

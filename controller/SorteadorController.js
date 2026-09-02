@@ -1,6 +1,7 @@
 import MissaDAO from "../DAO/MissaDAO.js"
 import FuncaoDAO from "../DAO/FuncaoDAO.js"
 import SorteadorDAO from "../DAO/SorteadorDAO.js"
+import { dataISO } from "../lib/data.js"
 
 // Funcoes de cada tipo de missa, na ordem em que aparecem na escala.
 // Sao casadas com a tabela `funcao` pelo nome (ignorando acento e maiuscula).
@@ -15,10 +16,7 @@ const normalizar = (s) =>
         .normalize('NFD').replace(/[̀-ͯ]/g, '')
         .trim().toLowerCase()
 
-const diaISO = (valor) => {
-    const d = new Date(valor)
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
+const diaISO = dataISO // -> 'YYYY-MM-DD' à prova de fuso (aceita string ou Date)
 
 const rotuloMes = (ym) => {
     const [ano, mes] = ym.split('-')
@@ -104,7 +102,7 @@ export default class SorteadorController {
                 missa: {
                     mis_id: missa.mis_id,
                     mis_nome: missa.mis_nome,
-                    mis_dia: missa.mis_dia,
+                    mis_dia: dataISO(missa.mis_dia),
                     mis_hora_inicio: missa.mis_hora_inicio
                 },
                 solene: !!solene,
@@ -167,7 +165,7 @@ export default class SorteadorController {
                 return {
                     mis_id: m.mis_id,
                     mis_nome: m.mis_nome,
-                    mis_dia: m.mis_dia,
+                    mis_dia: dataISO(m.mis_dia),
                     mis_hora_inicio: m.mis_hora_inicio,
                     solene,
                     jaEscalados: escalados.get(String(m.mis_id)) || 0,
@@ -210,8 +208,15 @@ export default class SorteadorController {
             if (linhas.length === 0)
                 return res.status(400).json({ ok: false, erro: 'Nenhum acolito para escalar.' })
 
-            await SorteadorDAO.salvarLote(linhas)
-            return res.status(201).json({ ok: true, total: linhas.length })
+            // rede de seguranca: nunca gravar quem esta indisponivel na data da missa
+            const semConflito = await SorteadorDAO.semConflitoIndisponibilidade(linhas)
+            const ignorados = linhas.length - semConflito.length
+
+            if (semConflito.length === 0)
+                return res.status(400).json({ ok: false, erro: 'Todos os acolitos escolhidos estao indisponiveis nessas datas.' })
+
+            await SorteadorDAO.salvarLote(semConflito)
+            return res.status(201).json({ ok: true, total: semConflito.length, ignorados })
         } catch (err) {
             console.log(err)
             return res.status(500).json({ ok: false, erro: 'Erro ao salvar a escala.' })

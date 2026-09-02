@@ -82,6 +82,24 @@ export default class SorteadorDAO {
         return rows
     }
 
+    // Dado [{mis_id, aco_id, fun_id}], devolve só as linhas SEM conflito de
+    // indisponibilidade (rede de seguranca antes de gravar a escala).
+    static async semConflitoIndisponibilidade(linhas) {
+        if (!linhas.length) return []
+        const { rows } = await pool.query(
+            `SELECT t.mis_id, t.aco_id, t.fun_id
+             FROM unnest($1::int[], $2::int[], $3::int[]) AS t(mis_id, aco_id, fun_id)
+             JOIN missa m ON m.mis_id = t.mis_id
+             WHERE NOT EXISTS (
+               SELECT 1 FROM indisponibilidade i
+               WHERE i.aco_id = t.aco_id
+                 AND m.mis_dia BETWEEN i.ind_data_inicio AND i.ind_data_fim
+             )`,
+            [linhas.map(l => Number(l.mis_id)), linhas.map(l => Number(l.aco_id)), linhas.map(l => Number(l.fun_id))]
+        )
+        return rows
+    }
+
     static async contarEscalados(mis_id) {
         const { rows } = await pool.query(
             'SELECT COUNT(*)::int AS qtd FROM escala WHERE mis_id = $1',

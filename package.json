@@ -7,9 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test --env-file-if-exists=.env",
     "dev": "nodemon app.js",
-    "start":"node app.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",

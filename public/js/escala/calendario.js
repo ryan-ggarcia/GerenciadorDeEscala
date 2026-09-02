@@ -5,6 +5,9 @@
     var panel = document.querySelector('[data-cal-panel]');
     if (!root || !panel) return;
 
+    // só quem está logado vê os botões de editar / excluir / escalar
+    var logado = root.getAttribute('data-logado') === '1';
+
     var grid = root.querySelector('[data-cal-grid]');
     var label = root.querySelector('[data-cal-label]');
 
@@ -23,7 +26,10 @@
     function keyOf(y, m, d) { return y + '-' + pad(m + 1) + '-' + pad(d); }
 
     function dateKey(raw) {
-        if (typeof raw === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+        // A data vem do servidor como 'YYYY-MM-DD' (ver lib/data.js). Tratamos como
+        // texto: new Date('YYYY-MM-DD') seria meia-noite UTC e o dia "andaria" pra
+        // trás em fusos negativos (sábado viraria sexta).
+        if (typeof raw === 'string' && /^\d{4}-\d{2}-\d{2}/.test(raw)) return raw.slice(0, 10);
         var d = new Date(raw);
         return keyOf(d.getFullYear(), d.getMonth(), d.getDate());
     }
@@ -132,20 +138,25 @@
                     (g.hora ? '<span class="liturgy-block__time">' + esc(hora(g.hora)) + '</span>' : '') + '</div>';
                 g.itens.forEach(function (e) {
                     var s = STATUS[e.status] || 'muted';
+                    var acoes = logado
+                        ? '<a class="icon-btn" href="/escala/alterar/' + encodeURIComponent(e.id) + '" aria-label="Editar escala"><i class="bi bi-pencil"></i></a>' +
+                          '<button type="button" class="icon-btn icon-btn--danger btn-excluir" data-id="' + esc(e.id) + '" aria-label="Remover da escala"><i class="bi bi-trash3"></i></button>'
+                        : '';
                     html += '<div class="assignment">' +
                         '<span class="assignment__role">' + esc(e.funcao) + '</span>' +
                         '<span class="assignment__name">' + esc(e.acolito) + '</span>' +
                         '<span class="assignment__actions">' +
                         '<span class="badge-status badge-status--' + s + '">' + esc(e.status) + '</span>' +
-                        '<a class="icon-btn" href="/escala/alterar/' + encodeURIComponent(e.id) + '" aria-label="Editar escala"><i class="bi bi-pencil"></i></a>' +
-                        '<button type="button" class="icon-btn icon-btn--danger btn-excluir" data-id="' + esc(e.id) + '" aria-label="Remover da escala"><i class="bi bi-trash3"></i></button>' +
+                        acoes +
                         '</span></div>';
                 });
                 html += '</div>';
             });
         }
 
-        html += '<a class="btn btn-outline-accent mt-2" href="/escala/cadastrar"><i class="bi bi-plus-lg"></i> Escalar acólito</a>';
+        if (logado) {
+            html += '<a class="btn btn-outline-accent mt-2" href="/escala/cadastrar"><i class="bi bi-plus-lg"></i> Escalar acólito</a>';
+        }
 
         panel.innerHTML = html;
         panel.hidden = false;

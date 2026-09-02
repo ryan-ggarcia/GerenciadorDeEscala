@@ -39,7 +39,7 @@
                                 <td class="cell-primary">
                                     <a href="/missa/alterar/<%= missa.mis_id %>"><%= missa.mis_nome %></a>
                                 </td>
-                                <td class="cell-muted"><%= missa.mis_dia ? new Date(missa.mis_dia).toLocaleDateString('pt-BR') : '—' %></td>
+                                <td class="cell-muted"><%= missa.mis_dia ? dataBR(missa.mis_dia) : '—' %></td>
                                 <td class="cell-muted">
                                     <%= missa.mis_hora_inicio ? String(missa.mis_hora_inicio).slice(0, 5) : '' %><%
                                     %><%= missa.mis_hora_final ? ' – ' + String(missa.mis_hora_final).slice(0, 5) : '' %>
